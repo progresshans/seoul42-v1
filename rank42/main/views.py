@@ -1,4 +1,4 @@
-import requests, json, math
+import requests, json
 
 from django.shortcuts import render
 from django.conf import settings
@@ -8,7 +8,7 @@ from django.views.generic.list import ListView
 from django.views import View
 
 from .custom import count_page
-from .models import FtUser
+from .models import FtUser, Coalition
 
 
 # Create your views here.
@@ -34,10 +34,10 @@ class FtApi:
 
 	def get_data(self, url, page=1, per_page=100, sort=None):
 		params = {
-			'access_token' : self.get_access_token(),
-			'page' : page if page else '',
-			'per_page' : per_page if per_page else '',
-			'sort' : sort if sort else '',
+			'access_token': self.get_access_token(),
+			'page': page if page else '',
+			'per_page': per_page if per_page else '',
+			'sort': sort if sort else '',
 		}
 		return requests.get(f'{self.ft_api_url}{url}', params=params).json()
 
@@ -48,13 +48,47 @@ class SuperUserCheckMixin(UserPassesTestMixin, View):
 
 
 class ManagePage(SuperUserCheckMixin, TemplateView):
-	template_name = "managepage.html"
+	template_name = "manage_page.html"
 
 
-class MakeFtUser(View):
+class MakeCoalition(SuperUserCheckMixin, View):
 	def post(self, request):
 		ft_api = FtApi()
-		page = count_page(int(ft_api.get_data(url="campus/29").json()["users_count"]))
-		crawlings = [ft_api.get_data(url="campus/29/users", page=x, per_page=100, sort="login") for x in page]
+		coalitions = ft_api.get_data(url="blocs/27")["coalitions"]
+		for coalition in coalitions:
+			if Coalition.objects.filter(id=coalition["id"]).exists():
+				pass
+			else:
+				Coalition.objects.create(
+					id=coalition["id"],
+					name=coalition["name"],
+					color=coalition["color"],
+				)
+
+
+class MakeFtUser(SuperUserCheckMixin, View):
+	def post(self, request):
+		ft_api = FtApi()
+		page = count_page(ft_api.get_data(url="campus/29")["users_count"])
+		crawlings = [ft_api.get_data(url="campus/29/users", page=x, per_page=100, sort="login") for x in range(int(page))]
 		for crawling in crawlings:
-			crawling.
+			for data in crawling:
+				if FtUser.objects.filter(id=data["id"]).exists():
+					pass
+				else:
+					# detail_data = ft_api.get_data(url=f'users/{data.id}')
+					coalition_data = ft_api.get_data(url=f'users/{data["id"]}/coalitions')
+					if coalition_data and Coalition.objects.filter(id=int(coalition_data[0]["id"])).exists():
+						FtUser.objects.create(
+							id=data["id"],
+							login=data["login"],
+							is_alive=True,
+							coalition=Coalition.objects.get(id=int(coalition_data[0]["id"])),
+							coalition_point=coalition_data[0]["score"],
+						)
+					else:
+						FtUser.objects.create(
+							id=data["id"],
+							login=data["login"],
+							is_alive=False,
+						)

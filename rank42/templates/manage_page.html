@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container">
+    <div class="row">
+        <form action="{% url 'make_coalition' %}" method="POST">
+            <div class="form-group">
+                <label for="makeCoalitionInput">Coalition 만들기</label>
+                <input type="text" class="form-control" id="makeCoalitionInput" aria-describedby="makeCoalitionHelp">
+                <small id="makeCoalitionHelp" class="form-text text-muted">만들고 싶은 coalition을 입력해야함.</small>
+            </div>
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Coalition 만들기</button>
+        </form>
+    </div>
+</section>
+<section class="container">
+    <div class="row">
+        <form action="{% url 'make_ft_user' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">FtUser 만들기</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

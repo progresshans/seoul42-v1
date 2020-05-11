@@ -23,3 +23,13 @@ print(requests.get(f'{api_url}users/68944', params={'access_token': access_token
 data = requests.get(f'{api_url}campus/29/users', params={'access_token': access_token, 'sort': "login"}).json()
 for i in data:
 	print(i['id'])
+
+datas = [requests.get(f'{api_url}campus/29/users', params={'access_token': access_token, 'page' : x, 'sort': "login"}).json() for x in range(4)]
+for data in datas:
+	print(data)
+
+coals = requests.get(f'{api_url}blocs/27', params={'access_token': access_token}).json()["coalitions"]
+for i in coals:
+	print(i["id"])
+
+print(requests.get(f'{api_url}campus/29', params={'access_token': access_token}).json()["users_count"])

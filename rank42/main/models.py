@@ -1,5 +1,5 @@
 from django.db import models
-from .manager import FtUserManager
+from .managers import FtUserManager, CoalitionManager
 
 
 # Create your models here.
@@ -10,12 +10,14 @@ class Coalition(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
+	objects = CoalitionManager()
+
 
 class FtUser(models.Model):
 	id = models.IntegerField(unique=True, primary_key=True)
 	login = models.CharField(verbose_name="로그인 아이디", max_length=20)
-	is_alive = models.BooleanField(verbose_name="생존여부")
-	coalition = models.ForeignKey(Coalition, verbose_name="길드", on_delete=models.CASCADE(), blank=True, null=True)
+	is_alive = models.BooleanField(verbose_name="생존여부", default=False)
+	coalition = models.ForeignKey(Coalition, verbose_name="길드", on_delete=models.CASCADE, blank=True, null=True)
 	coalition_point = models.IntegerField(verbose_name="길드 포인트", blank=True, null=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
@@ -32,8 +34,8 @@ class UpdateBranch(models.Model):
 
 class PointLog(models.Model):
 	id = models.AutoField(primary_key=True)
-	ft_user = models.ForeignKey(FtUser, on_delete=models.CASCADE())
-	update_branch = models.ForeignKey(UpdateBranch, on_delete=models.CASCADE())
+	ft_user = models.ForeignKey(FtUser, on_delete=models.CASCADE)
+	update_branch = models.ForeignKey(UpdateBranch, on_delete=models.CASCADE)
 	coalition_point = models.IntegerField(verbose_name="길드 포인트")
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
