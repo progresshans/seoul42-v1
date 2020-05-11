@@ -33,3 +33,5 @@ for i in coals:
 	print(i["id"])
 
 print(requests.get(f'{api_url}campus/29', params={'access_token': access_token}).json()["users_count"])
+
+print(requests.get(f'{oauth_url}/info', params={'access_token': access_token}).json())
