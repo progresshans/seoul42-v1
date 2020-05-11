@@ -20,12 +20,18 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '9=m!n=s%nos73$$h&!ty45$e-$a)m-as4i)^bf8#_ve4ocw#3+'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '9=m!n=s%nos73$$h&!ty45$e-$a)m-as4i)^bf8#_ve4ocw#3+')
+FT_UID_KEY = os.environ.get('FT_UID_KEY', '20a94ea0961be7f69ed5554cb250a55efe9109bb31a93c63744299eee41aac4d')
+FT_SECRET_KEY = os.environ.get('FT_SECRET_KEY', 'c7257e57a584e98b971996696badd424d8bc16bea0c839633bc5b83566edf8f7')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '.herokuapp.com',
+]
 
 
 # Application definition
@@ -107,13 +113,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
