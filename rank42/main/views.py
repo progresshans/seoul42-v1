@@ -1,4 +1,4 @@
-import requests, json
+import requests, json, math
 
 from django.shortcuts import render
 from django.conf import settings
@@ -7,16 +7,21 @@ from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views import View
 
+from .custom import count_page
+from .models import FtUser
+
 
 # Create your views here.
 class FtApi:
 	ft_access_token = None
 	ft_oauth_url = "https://api.intra.42.fr/oauth/token"
 	ft_api_url = "https://api.intra.42.fr/v2/"
+	update_branch = None
 
-	def __init__(self):
+	def __init__(self, UpdateBranch=None):
 		self.ft_uid_key = settings.FT_UID_KEY
 		self.ft_secret_key = settings.FT_SECRET_KEY
+		self.update_branch = UpdateBranch if UpdateBranch else None
 
 	def get_access_token(self):
 		oauth_data = {
@@ -47,3 +52,9 @@ class ManagePage(SuperUserCheckMixin, TemplateView):
 
 
 class MakeFtUser(View):
+	def post(self, request):
+		ft_api = FtApi()
+		page = count_page(int(ft_api.get_data(url="campus/29").json()["users_count"]))
+		crawlings = [ft_api.get_data(url="campus/29/users", page=x, per_page=100, sort="login") for x in page]
+		for crawling in crawlings:
+			crawling.

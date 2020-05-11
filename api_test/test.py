@@ -19,3 +19,7 @@ except IndexError:
 	print("본과 사람이 아님.")
 print(requests.get(f'{api_url}users/68944', params={'access_token': access_token}).json()["cursus_users"][1]["blackholed_at"])
 print(requests.get(f'{api_url}users/68944', params={'access_token': access_token}).json())
+
+data = requests.get(f'{api_url}campus/29/users', params={'access_token': access_token, 'sort': "login"}).json()
+for i in data:
+	print(i['id'])
