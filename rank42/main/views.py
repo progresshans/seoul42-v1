@@ -94,24 +94,13 @@ class MakeFtUser(SuperUserCheckMixin, View):
 						)
 
 
-class MainIndex(ListView):
-	context_object_name = "objects"
+class MainIndex(TemplateView):
 	template_name = "main_index.html"
 
-	def get_queryset(self):
-		ft_user = FtUser.objects.filter(is_alive=True).order_by('-coalition_point')
-		rank_tier = RankTier(ft_user.count())
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		ft_users = FtUser.objects.filter(is_alive=True).order_by('-coalition_point')
+		rank_tier = RankTier(ft_users.count())
 
-		queryset = {
-			'ft_user': ft_user,
-			'challenger': rank_tier.challenger,
-			'grandmaster': rank_tier.grandmaster,
-			'master': rank_tier.master,
-			'diamond': rank_tier.diamond,
-			'platinum': rank_tier.platinum,
-			'gold': rank_tier.gold,
-			'silver': rank_tier.silver,
-			'bronze': rank_tier.bronze,
-			'iron': rank_tier.iron,
-		}
-		return queryset
+		context['ft_users'] = rank_tier.set_tier(ft_users)
+		return context

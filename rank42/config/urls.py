@@ -20,6 +20,8 @@ import main.views
 urlpatterns = [
 	path('admin/', admin.site.urls),
 
+	path('', main.views.MainIndex.as_view(), name="main_index"),
+
 	path('manage/', main.views.ManagePage.as_view(), name="manage"),
 	path('manage/make/coalition', main.views.MakeCoalition.as_view(), name="make_coalition"),
 	path('manage/make/ft-user', main.views.MakeFtUser.as_view(), name="make_ft_user"),

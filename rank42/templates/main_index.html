@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for ft_user in ft_users %}
+        <p>{{ ft_user.tier_rank }} - {{ ft_user.tier_name }}</p>
+    {% endfor %}
+{% endblock %}
