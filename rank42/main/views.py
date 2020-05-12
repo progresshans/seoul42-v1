@@ -34,7 +34,7 @@ class MakeFtUser(SuperUserCheckMixin, View):
 	def post(self, request):
 		ft_api = FtApi()
 		page = count_page(ft_api.get_data(url="campus/29")["users_count"])
-		crawlings = [ft_api.get_data(url="campus/29/users", page=x, per_page=100, sort="login") for x in range(int(page))]
+		crawlings = [ft_api.get_data(url="campus/29/users", page=x, per_page=100, sort="login") for x in range(1, int(page) + 1)]
 		for crawling in crawlings:
 			for data in crawling:
 				if FtUser.objects.filter(id=data["id"]).exists():
@@ -63,8 +63,9 @@ class MainIndex(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		ft_users = FtUser.objects.filter(is_alive=True).order_by('-coalition_point')
+		ft_users = FtUser.objects.filter(is_alive=True).exclude(coalition_point=0).order_by('-coalition_point')
+		unrank_ft_users = FtUser.objects.filter(is_alive=True, coalition_point=0)
 		rank_tier = RankTier(ft_users.count())
 
-		context['ft_users'] = rank_tier.set_tier(ft_users)
+		context['ft_users'], context['unrank_ft_users'] = rank_tier.set_tier(ft_users, unrank_ft_users)
 		return context

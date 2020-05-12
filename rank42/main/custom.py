@@ -75,6 +75,8 @@ class RankTier:
 	iron_name = "Iron"
 	iron_per = 7.0
 	iron_img = "https://opgg-static.akamaized.net/images/medals/iron_1.png"
+	unranked_name = "Unranked"
+	unranked_img = "https://opgg-static.akamaized.net/images/medals/default.png"
 
 	def __init__(self, number):
 		self.challenger = round(number * (self.challenger_per / 100))
@@ -87,7 +89,7 @@ class RankTier:
 		self.bronze = round(number * (self.bronze_per / 100))
 		self.iron = number - (self.challenger + self.grandmaster + self.master + self.diamond + self.platinum + self.gold + self.silver + self.bronze)
 
-	def set_tier(self, ft_users):
+	def set_tier(self, ft_users, unrank_ft_users):
 		for i, ft_user in enumerate(ft_users):
 			if self.challenger >= i:
 				ft_user.tier_name = self.challenger_name
@@ -117,4 +119,8 @@ class RankTier:
 				ft_user.tier_name = self.iron_name
 				ft_user.tier_img = self.iron_img
 			ft_user.tier_rank = i + 1
-		return ft_users
+		for ft_user in unrank_ft_users:
+			ft_user.tier_name = self.unranked_name
+			ft_user.tier_img = self.unranked_img
+			ft_user.tier_rank = ' '
+		return ft_users, unrank_ft_users
