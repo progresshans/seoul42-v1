@@ -46,6 +46,7 @@ class SuperUserCheckMixin(UserPassesTestMixin, View):
 	def test_func(self):
 		return self.request.user.is_superuser
 
+
 class RankTier:
 	challenger_name = "Chanllenger"
 	challenger_per = 0.1

@@ -41,13 +41,13 @@ class MakeFtUser(SuperUserCheckMixin, View):
 					pass
 				else:
 					# detail_data = ft_api.get_data(url=f'users/{data.id}')
-					coalition_data = ft_api.get_data(url=f'users/{data["id"]}/coalitions')
-					if coalition_data and Coalition.objects.filter(id=int(coalition_data[0]["id"])).exists():
+					coalition_data = ft_api.get_data(url=f'users/{data["id"]}/coalitions_users')
+					if coalition_data and Coalition.objects.filter(id=int(coalition_data[0]["coalition_id"])).exists():
 						FtUser.objects.create(
 							id=data["id"],
 							login=data["login"],
 							is_alive=True,
-							coalition=Coalition.objects.get(id=int(coalition_data[0]["id"])),
+							coalition=Coalition.objects.get(id=int(coalition_data[0]["coalition_id"])),
 							coalition_point=coalition_data[0]["score"],
 						)
 					else:
