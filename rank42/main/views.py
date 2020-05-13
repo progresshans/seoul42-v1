@@ -69,3 +69,16 @@ class MainIndex(TemplateView):
 
 		context['ft_users'], context['unrank_ft_users'] = rank_tier.set_tier(ft_users, unrank_ft_users)
 		return context
+
+
+class RankSearch(TemplateView):
+	template_name = "rank_search.html"
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		login = self.request.GET.get('login', '')
+		ft_users = FtUser.objects.filter(is_alive=True).exclude(coalition_point=0).order_by('-coalition_point')
+		rank_tier = RankTier(ft_users.count())
+
+		context['ft_user'] = rank_tier.set_tier(ft_users).get(login=login)
+		return context
