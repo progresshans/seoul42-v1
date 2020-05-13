@@ -7,7 +7,7 @@ from django.views.generic.list import ListView
 from django.views import View
 
 from .custom import count_page, RankTier, FtApi, SuperUserCheckMixin
-from .models import FtUser, Coalition
+from .models import FtUser, Coalition, Tier
 
 
 # Create your views here.
@@ -28,6 +28,7 @@ class MakeCoalition(SuperUserCheckMixin, View):
 					name=coalition["name"],
 					color=coalition["color"],
 				)
+		return render(request, "manage_complete.html", {"task": "MakeCoalition"})
 
 
 class MakeFtUser(SuperUserCheckMixin, View):
@@ -56,6 +57,17 @@ class MakeFtUser(SuperUserCheckMixin, View):
 							login=data["login"],
 							is_alive=False,
 						)
+		return render(request, "manage_complete.html", {"task": "MakeFtUser"})
+
+
+# FtUser에 있던 coalition 포인트를 Tier로 옮김 (추후 삭제)
+class MoveCoalitionPoint(SuperUserCheckMixin, View):
+	def post(self, request):
+		ft_users = FtUser.objects.filter(is_alive=True)
+		for ft_user in ft_users:
+			tier = Tier(id=ft_user.id, coalition_point=ft_user.coalition_point)
+			tier.save()
+		return render(request, "manage_complete.html", {"task":"MoveCoalitionPoint"})
 
 
 class MainIndex(TemplateView):
