@@ -66,6 +66,9 @@ class MoveCoalitionPoint(SuperUserCheckMixin, View):
 		ft_users = FtUser.objects.filter(is_alive=True)
 		for ft_user in ft_users:
 			tier = Tier(id=ft_user.id, coalition_point=ft_user.coalition_point)
+			if ft_user.coalition_point == 0:
+				tier.name = "Unranked"
+				tier.rank = 0
 			tier.save()
 		return render(request, "manage_complete.html", {"task":"MoveCoalitionPoint"})
 

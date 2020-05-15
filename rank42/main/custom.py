@@ -2,6 +2,7 @@ import requests
 from django.conf import settings
 from django.views import View
 from django.contrib.auth.mixins import UserPassesTestMixin
+from .models import Tier
 
 
 def count_page(number):
@@ -72,45 +73,50 @@ class RankTier:
 	unranked_name = "Unranked"
 	unranked_img = "https://opgg-static.akamaized.net/images/medals/default.png"
 
-	def __init__(self, number):
-		self.rank_users_number = int(number)
-		self.challenger = round(number * (self.challenger_per / 100))
-		self.master = round(number * (self.master_per / 100))
-		self.diamond = round(number * (self.diamond_per / 100))
-		self.platinum = round(number * (self.platinum_per / 100))
-		self.gold = round(number * (self.gold_per / 100))
-		self.silver = round(number * (self.silver_per / 100))
-		self.bronze = number - (self.challenger + self.master + self.diamond + self.platinum + self.gold + self.silver)
+	def __init__(self, number=None):
+		if number:
+			self.rank_users_number = int(number)
+			self.challenger = round(number * (self.challenger_per / 100))
+			self.master = round(number * (self.master_per / 100))
+			self.diamond = round(number * (self.diamond_per / 100))
+			self.platinum = round(number * (self.platinum_per / 100))
+			self.gold = round(number * (self.gold_per / 100))
+			self.silver = round(number * (self.silver_per / 100))
+			self.bronze = number - (self.challenger + self.master + self.diamond + self.platinum + self.gold + self.silver)
+
+	def make_tier_list(self):
+
 
 	def set_tier(self, ft_users, unrank_ft_users=None):
 		for i, ft_user in enumerate(ft_users):
+			temp = {}
+			tier = Tier(id=ft_user.id)
 			if self.challenger >= i:
-				ft_user.tier_name = self.challenger_name
-				ft_user.tier_img = self.challenger_img
+				temp["tier_name"] = self.challenger_name
 			elif self.challenger + self.master >= i:
-				ft_user.tier_name = self.master_name
-				ft_user.tier_img = self.master_img
+				temp["tier_name"] = self.master_name
 			elif self.challenger + self.master + self.diamond >= i:
-				ft_user.tier_name = self.diamond_name
-				ft_user.tier_img = self.diamond_img
+				temp["tier_name"] = self.diamond_name
 			elif self.challenger + self.master + self.diamond + self.platinum >= i:
-				ft_user.tier_name = self.platinum_name
-				ft_user.tier_img = self.platinum_img
+				temp["tier_name"] = self.platinum_name
 			elif self.challenger + self.master + self.diamond + self.platinum + self.gold >= i:
-				ft_user.tier_name = self.gold_name
-				ft_user.tier_img = self.gold_img
+				temp["tier_name"] = self.gold_name
 			elif self.challenger + self.master + self.diamond + self.platinum + self.gold + self.silver >= i:
-				ft_user.tier_name = self.silver_name
-				ft_user.tier_img = self.silver_img
+				temp["tier_name"] = self.silver_name
 			else:
-				ft_user.tier_name = self.bronze_name
-				ft_user.tier_img = self.bronze_img
-			ft_user.tier_rank = i + 1
+				temp["tier_name"] = self.bronze_name
+			temp["tier_rank"] = i + 1
+			if temp["tier_rank"] != tier.tier_rank or temp["tier_name"] != tier.tier_name:
+				tier.tier_name = temp["tier_name"]
+				tier.tier_rank = temp["tier_rank"]
+				tier.save()
 		if unrank_ft_users:
 			for ft_user in unrank_ft_users:
-				ft_user.tier_name = self.unranked_name
-				ft_user.tier_img = self.unranked_img
-				ft_user.tier_rank = 0
+				tier = Tier(id=ft_user.id)
+				tier.tier_name = self.unranked_name
+				tier.tier_img = self.unranked_img
+				tier.tier_rank = 0
+				tier.save()
 			return ft_users, unrank_ft_users
 		return ft_users
 
