@@ -25,4 +25,5 @@ urlpatterns = [
 	path('manage/', main.views.ManagePage.as_view(), name="manage"),
 	path('manage/make/coalition', main.views.MakeCoalition.as_view(), name="make_coalition"),
 	path('manage/make/ft-user', main.views.MakeFtUser.as_view(), name="make_ft_user"),
+	path('manage/migrate/move-coalition-point', main.views.MoveCoalitionPoint.as_view(), name="move_coalition_point"),
 ]

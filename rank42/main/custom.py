@@ -1,4 +1,5 @@
 import requests
+from django_pandas.io import read_frame
 from django.conf import settings
 from django.views import View
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -89,12 +90,11 @@ class RankTier:
 		if number:
 			self.rank_users_number = int(number)
 			self.challenger = round(number * (self.challenger_per / 100))
-			self.master = round(number * (self.master_per / 100))
 			self.diamond = round(number * (self.diamond_per / 100))
 			self.platinum = round(number * (self.platinum_per / 100))
 			self.gold = round(number * (self.gold_per / 100))
 			self.silver = round(number * (self.silver_per / 100))
-			self.bronze = number - (self.challenger + self.master + self.diamond + self.platinum + self.gold + self.silver)
+			self.bronze = number - (self.challenger + self.diamond + self.platinum + self.gold + self.silver)
 
 	def make_tier_list(self, ft_user=None):
 		"""
@@ -109,8 +109,7 @@ class RankTier:
 			coalition_data = ft_api.get_data(url=f'users/{ft_user.id}/coalitions_users')
 			tier.coalition_point = coalition_data[0]["score"]
 			tier.save()
-		tiers = Tier.objects.all()
-		for tier in tiers:
+		tiers = read_frame(Tier.objects.exclude(coalition_point=0))
 
 
 
@@ -127,15 +126,13 @@ class RankTier:
 			tier = Tier(id=ft_user.id)
 			if self.challenger >= i:
 				temp["tier_name"] = self.challenger_name
-			elif self.challenger + self.master >= i:
-				temp["tier_name"] = self.master_name
-			elif self.challenger + self.master + self.diamond >= i:
+			elif self.challenger + self.diamond >= i:
 				temp["tier_name"] = self.diamond_name
-			elif self.challenger + self.master + self.diamond + self.platinum >= i:
+			elif self.challenger + self.diamond + self.platinum >= i:
 				temp["tier_name"] = self.platinum_name
-			elif self.challenger + self.master + self.diamond + self.platinum + self.gold >= i:
+			elif self.challenger + self.diamond + self.platinum + self.gold >= i:
 				temp["tier_name"] = self.gold_name
-			elif self.challenger + self.master + self.diamond + self.platinum + self.gold + self.silver >= i:
+			elif self.challenger + self.diamond + self.platinum + self.gold + self.silver >= i:
 				temp["tier_name"] = self.silver_name
 			else:
 				temp["tier_name"] = self.bronze_name

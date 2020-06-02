@@ -21,5 +21,11 @@
             <button type="submit" class="btn btn-primary">FtUser 만들기</button>
         </form>
     </div>
+    <div class="row">
+        <form action="{% url 'move_coalition_point' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Tier 만들기(migration)</button>
+        </form>
+    </div>
 </section>
 {% endblock %}

@@ -65,7 +65,7 @@ class MoveCoalitionPoint(SuperUserCheckMixin, View):
 	def post(self, request):
 		ft_users = FtUser.objects.filter(is_alive=True)
 		for ft_user in ft_users:
-			tier = Tier(id=ft_user.id, coalition_point=ft_user.coalition_point)
+			tier = Tier(FtUser=ft_user, coalition_point=ft_user.coalition_point)
 			if ft_user.coalition_point == 0:
 				tier.name = "Unranked"
 				tier.rank = 0
