@@ -15,6 +15,7 @@ def count_page(number):
 
 
 class FtApi:
+	"""42api 파싱 class"""
 	ft_access_token = None
 	ft_oauth_url = "https://api.intra.42.fr/oauth/token"
 	ft_api_url = "https://api.intra.42.fr/v2/"
@@ -26,6 +27,7 @@ class FtApi:
 		self.update_branch = UpdateBranch if UpdateBranch else None
 
 	def get_access_token(self):
+		"""42api에 접속하기 위한 access_token을 반환"""
 		oauth_data = {
 			'grant_type': 'client_credentials',
 			'client_id': self.ft_uid_key,
@@ -35,6 +37,15 @@ class FtApi:
 		return self.ft_access_token
 
 	def get_data(self, url, page=1, per_page=100, sort=None):
+		"""
+		42api를 통해 json 파싱 데이터를 반환
+
+		:param url: 'https://api.intra.42.fr/apidoc' 참조, '/v2/'이후의 url
+		:param page: 파싱할 페이지
+		:param per_page: 페이지당 가져올 목록 개수
+		:param sort: 정렬 기준
+		:return: 42api json 파싱 데이터
+		"""
 		params = {
 			'access_token': self.get_access_token(),
 			'page': page if page else '',
@@ -85,9 +96,22 @@ class RankTier:
 			self.silver = round(number * (self.silver_per / 100))
 			self.bronze = number - (self.challenger + self.master + self.diamond + self.platinum + self.gold + self.silver)
 
-	def make_tier_list(self):
-		"""Tier 모델을 가지고 전체적으로 티어를 설정함"""
-		pass
+	def make_tier_list(self, ft_user=None):
+		"""
+		Tier 모델을 가지고 전체적으로 티어를 설정함
+		ft_user가 존재할 경우, 해당 유저의 점수를 다시 불러온 후 전체적으로 티어를 설정함
+
+		:param ft_user: 점수를 다시 불러오고자 하는 유저 queryset
+		"""
+		if ft_user:
+			tier = Tier.objects.get(id=ft_user.id)
+			ft_api = FtApi()
+			coalition_data = ft_api.get_data(url=f'users/{ft_user.id}/coalitions_users')
+			tier.coalition_point = coalition_data[0]["score"]
+			tier.save()
+		tiers = Tier.objects.all()
+		for tier in tiers:
+
 
 
 	def set_tier(self, ft_users, unrank_ft_users=None):

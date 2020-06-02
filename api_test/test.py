@@ -46,11 +46,11 @@ print(oauth_request.json())
 #
 # print(requests.get(f'{oauth_url}/info', params={'access_token': access_token}).json())
 
-def count_page(number):
-	if int(number) <= 100:
-		return 1
-	page = int(number) / 100
-	page = int(page) + 1 if number % (100 * int(page)) != 0 else int(page)
-	return page
+# def count_page(number):
+# 	if int(number) <= 100:
+# 		return 1
+# 	page = int(number) / 100
+# 	page = int(page) + 1 if number % (100 * int(page)) != 0 else int(page)
+# 	return page
 
-print(requests.get(f'{api_url}campus/29', params={'access_token': access_token}).json()["users_count"])
+print(requests.get(f'{api_url}events/4579', params={'access_token': access_token}).json())
