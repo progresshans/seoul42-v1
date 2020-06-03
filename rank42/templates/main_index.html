@@ -13,8 +13,8 @@
         <tbody>
             {% for ft_user in ft_users %}
                 <tr>
-                    <th scope="row">{{ ft_user.tier_rank }}</th>
-                    <td><img src="{{ ft_user.tier_img }}" class="rounded" style="max-width: 40px; height: auto;"> {{ ft_user.tier_name }}</td>
+                    <th scope="row">{{ ft_user.tier.tier_rank }}</th>
+                    <td><img src="{{ ft_user.tier_img }}" class="rounded" style="max-width: 40px; height: auto;"> {{ ft_user.tier.tier_name }}</td>
                     <td>{{ ft_user.login }} <span style="background-color:{{ ft_user.coalition.color }}; color:white;">{{ ft_user.coalition.name }}</span></td>
                     <td>{{ ft_user.coalition_point }}</td>
                 </tr>
