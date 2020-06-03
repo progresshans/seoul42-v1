@@ -149,7 +149,7 @@ class RankTier:
 		"""
 		for i, ft_user in enumerate(ft_users):
 			temp = {}
-			tier = Tier(FtUser=ft_user)
+			tier = Tier.objects.get(FtUser=ft_user)
 			temp["tier_name"] = self.tier_class_list[i].tier_name
 			ft_user.tier_img = self.tier_class_list[i].tier_img
 			temp["tier_rank"] = i + 1
@@ -162,7 +162,7 @@ class RankTier:
 		if unrank_ft_users:
 			for ft_user in unrank_ft_users:
 				ft_user.tier_img = self.unranked_img
-				tier = Tier(FtUser=ft_user)
+				tier = Tier.objects.get(FtUser=ft_user)
 				tier.tier_name = self.unranked_name
 				tier.tier_rank = 0
 				tier.save()

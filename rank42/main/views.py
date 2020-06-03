@@ -1,4 +1,5 @@
 import requests, json
+from django_pandas.io import read_frame
 
 from django.shortcuts import render
 from django.conf import settings
@@ -65,7 +66,8 @@ class MoveCoalitionPoint(SuperUserCheckMixin, View):
 	def post(self, request):
 		ft_users = FtUser.objects.filter(is_alive=True)
 		for ft_user in ft_users:
-			tier = Tier(FtUser=ft_user, coalition_point=ft_user.coalition_point)
+			tier = Tier(FtUser=ft_user)
+			tier.coalition_point = ft_user.coalition_point
 			if ft_user.coalition_point == 0:
 				tier.name = "Unranked"
 				tier.rank = 0
@@ -73,8 +75,12 @@ class MoveCoalitionPoint(SuperUserCheckMixin, View):
 		return render(request, "manage_complete.html", {"task":"MoveCoalitionPoint"})
 
 
-class MainIndex(TemplateView):
+class Main(TemplateView):
 	template_name = "main_index.html"
+
+
+class List(TemplateView):
+	template_name = "list.html"
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
@@ -86,14 +92,25 @@ class MainIndex(TemplateView):
 		return context
 
 
-class RankSearch(TemplateView):
-	template_name = "rank_search.html"
+class Search(TemplateView):
+	template_name = "search.html"
+
+	@staticmethod
+	def get_next_tier_name(ft_users, ft_user):
+		for temp_user in ft_users:
+			if temp_user.tier.tier_name != ft_user.tier.tier_name:
+				return temp_user.tier.tier_name, temp_user.tier.coalition_point - ft_user.tier.coalition_point
+		return 0, 0
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		login = self.request.GET.get('login', '')
-		ft_users = FtUser.objects.filter(is_alive=True).exclude(coalition_point=0).order_by('-coalition_point')
-		rank_tier = RankTier(ft_users.count())
+		ft_users = FtUser.objects.filter(is_alive=True).order_by('-coalition_point')
+		ft_user = ft_users.get(login=login)
+		ft_user.percent = round(ft_users.count() / ft_user.tier.tier_rank, 1)
+		next_tier_name, next_tier_point = self.get_next_tier_name(ft_users.reverse()[:ft_user.tier.tier_rank - 1], ft_user)
+		ft_user.next_tier_name = next_tier_name
+		ft_user.next_tier_point = next_tier_point
 
-		context['ft_user'] = rank_tier.set_tier(ft_users).get(login=login)
+		context['ft_user'] = ft_user
 		return context
