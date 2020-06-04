@@ -1,9 +1,19 @@
-import requests, json
+import requests, json, os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SECRET_INFO_FILE = os.path.join(BASE_DIR, 'rank42', 'config', 'settings', 'secret_info_file.json')
+with open(SECRET_INFO_FILE) as f:
+    secrets = json.loads(f.read())
+def get_secret(setting, secrets=secrets):
+    try:
+        return secrets[setting]
+    except KeyError:
+        print(f"Set the {setting} environment variable")
 
 oauth_data = {
 	'grant_type': 'client_credentials',
-	'client_id': '20a94ea0961be7f69ed5554cb250a55efe9109bb31a93c63744299eee41aac4d',
-	'client_secret': 'c7257e57a584e98b971996696badd424d8bc16bea0c839633bc5b83566edf8f7',
+	'client_id': get_secret("FT_UID_KEY"),
+	'client_secret': get_secret("FT_SECRET_KEY"),
 }
 oauth_url = "https://api.intra.42.fr/oauth/token"
 api_url = "https://api.intra.42.fr/v2/"
@@ -36,11 +46,11 @@ print(oauth_request.json())
 #
 # print(requests.get(f'{oauth_url}/info', params={'access_token': access_token}).json())
 
-def count_page(number):
-	if int(number) <= 100:
-		return 1
-	page = int(number) / 100
-	page = int(page) + 1 if number % (100 * int(page)) != 0 else int(page)
-	return page
+# def count_page(number):
+# 	if int(number) <= 100:
+# 		return 1
+# 	page = int(number) / 100
+# 	page = int(page) + 1 if number % (100 * int(page)) != 0 else int(page)
+# 	return page
 
-print(requests.get(f'{api_url}campus/29', params={'access_token': access_token}).json()["users_count"])
+print(requests.get(f'{api_url}events/4579', params={'access_token': access_token}).json())

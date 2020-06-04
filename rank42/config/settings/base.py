@@ -10,10 +10,25 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
-import os
+import os, json
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# secret_info_file.json 파일 위치를 명시
+SECRET_INFO_FILE = os.path.join(BASE_DIR, 'config', 'settings', 'secret_info_file.json')
+
+with open(SECRET_INFO_FILE) as f:
+    secrets = json.loads(f.read())
+
+def get_secret(setting, secrets=secrets):
+    """비밀 변수를 가져오거나 명시적 예외를 반환한다."""
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = f"Set the {setting} environment variable"
+        raise ImproperlyConfigured(error_msg)
 
 
 # Quick-start development settings - unsuitable for production
@@ -21,8 +36,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '9=m!n=s%nos73$$h&!ty45$e-$a)m-as4i)^bf8#_ve4ocw#3+')
-FT_UID_KEY = os.environ.get('FT_UID_KEY', '20a94ea0961be7f69ed5554cb250a55efe9109bb31a93c63744299eee41aac4d')
-FT_SECRET_KEY = os.environ.get('FT_SECRET_KEY', 'c7257e57a584e98b971996696badd424d8bc16bea0c839633bc5b83566edf8f7')
+FT_UID_KEY = os.environ.get('FT_UID_KEY', get_secret("FT_UID_KEY"))
+FT_SECRET_KEY = os.environ.get('FT_SECRET_KEY', get_secret("FT_SECRET_KEY"))
 
 
 # Application definition

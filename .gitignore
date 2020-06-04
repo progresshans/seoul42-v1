@@ -231,3 +231,6 @@ pip-selfcheck.json
 .history
 
 # End of https://www.gitignore.io/api/venv,django,pycharm,visualstudiocode
+
+### MY SETTINGS ###
+secret_info_file.json
