@@ -25,6 +25,13 @@ class FtUser(models.Model):
 	objects = FtUserManager()
 
 
+class Tier(models.Model):
+	FtUser = models.OneToOneField(FtUser, on_delete=models.CASCADE, primary_key=True)
+	coalition_point = models.IntegerField(verbose_name="길드 포인트", blank=True, null=True)
+	tier_name = models.CharField(max_length=13, blank=True, null=True)
+	tier_rank = models.IntegerField(blank=True, null=True)
+
+
 class UpdateBranch(models.Model):
 	id = models.AutoField(primary_key=True)
 	is_updating = models.BooleanField()

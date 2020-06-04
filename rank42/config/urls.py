@@ -20,9 +20,12 @@ import main.views
 urlpatterns = [
 	path('admin/', admin.site.urls),
 
-	path('', main.views.MainIndex.as_view(), name="main_index"),
+	path('', main.views.Main.as_view(), name="main"),
+	path('list/', main.views.List.as_view(), name="list"),
+	path('search/<str:login>/', main.views.Search.as_view(), name="search"),
 
 	path('manage/', main.views.ManagePage.as_view(), name="manage"),
 	path('manage/make/coalition', main.views.MakeCoalition.as_view(), name="make_coalition"),
 	path('manage/make/ft-user', main.views.MakeFtUser.as_view(), name="make_ft_user"),
+	path('manage/migrate/move-coalition-point', main.views.MoveCoalitionPoint.as_view(), name="move_coalition_point"),
 ]
