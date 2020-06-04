@@ -1,11 +1,12 @@
 import requests, json
 from django_pandas.io import read_frame
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, View
 from django.views.generic.list import ListView
 from django.views import View
+from django.urls import reverse
 
 from .custom import count_page, RankTier, FtApi, SuperUserCheckMixin
 from .models import FtUser, Coalition, Tier
@@ -75,8 +76,11 @@ class MoveCoalitionPoint(SuperUserCheckMixin, View):
 		return render(request, "manage_complete.html", {"task":"MoveCoalitionPoint"})
 
 
-class Main(TemplateView):
-	template_name = "main.html"
+class Main(View):
+	def get(self, request, **kwargs):
+		if request.GET.get('login'):
+			return redirect('search', login=request.GET.get('login'))
+		return render(request, "main.html")
 
 
 class List(TemplateView):
