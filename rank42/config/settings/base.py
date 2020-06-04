@@ -16,19 +16,20 @@ from django.core.exceptions import ImproperlyConfigured
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# secret_info_file.json 파일 위치를 명시
-SECRET_INFO_FILE = os.path.join(BASE_DIR, 'config', 'settings', 'secret_info_file.json')
 
-with open(SECRET_INFO_FILE) as f:
-    secrets = json.loads(f.read())
-
-def get_secret(setting, secrets=secrets):
+def get_secret(setting):
     """비밀 변수를 가져오거나 명시적 예외를 반환한다."""
     try:
+        # secret_info_file.json 파일 위치를 명시
+        SECRET_INFO_FILE = os.path.join(BASE_DIR, 'config', 'settings', 'secret_info_file.json')
+
+        with open(SECRET_INFO_FILE) as f:
+            secrets = json.loads(f.read())
+
         return secrets[setting]
     except KeyError:
         error_msg = f"Set the {setting} environment variable"
-        raise ImproperlyConfigured(error_msg)
+        print(ImproperlyConfigured(error_msg))
 
 
 # Quick-start development settings - unsuitable for production
