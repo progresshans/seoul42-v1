@@ -30,6 +30,7 @@ def get_secret(setting):
     except KeyError:
         error_msg = f"Set the {setting} environment variable"
         print(ImproperlyConfigured(error_msg))
+        return 0
 
 
 # Quick-start development settings - unsuitable for production
