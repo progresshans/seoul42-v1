@@ -100,7 +100,7 @@ class RankTier:
 				if not flag:
 					numbers = []
 					numbers_append = numbers.append
-					for i in range(4, 0, -1):
+					for i in range(5, 0, -1):
 						numbers_append(int(number / i))
 						number -= numbers[-1]
 
@@ -168,6 +168,9 @@ class RankTier:
 				tier.save()
 			return ft_users, unrank_ft_users
 		return ft_users
+
+	def get_tier_img(self, tier_name):
+		return eval(f"self.{''.join(c for c in tier_name if not c.isdigit()).lower()}_img")
 
 	def get_rank_users_number(self):
 		"""class 생성시 'number(캠퍼스의 본과 참여 학생수)'에 입력된 값을 반환"""
