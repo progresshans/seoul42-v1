@@ -4,6 +4,15 @@ from .base import *
 DEBUG = False
 
 
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+FT_UID_KEY = os.environ.get('FT_UID_KEY')
+FT_SECRET_KEY = os.environ.get('FT_SECRET_KEY')
+
+
 ALLOWED_HOSTS = [
     '.herokuapp.com',
 ]
