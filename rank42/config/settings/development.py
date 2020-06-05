@@ -1,3 +1,6 @@
+"""
+개발환경에서 사용되는 설정
+"""
 from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!

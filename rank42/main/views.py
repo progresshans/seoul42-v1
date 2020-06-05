@@ -1,14 +1,17 @@
 import requests, json
 from django_pandas.io import read_frame
+from typing import Dict, Any, Iterable
 
 from django.shortcuts import render, redirect
 from django.conf import settings
-from django.views.generic.base import TemplateView, View
+from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views import View
 from django.urls import reverse
 
-from .custom import count_page, RankTier, FtApi, SuperUserCheckMixin
+from .custom import count_page, SuperUserCheckMixin
+from .ftapi import FtApi
+from .rank import RankTier
 from .models import FtUser, Coalition, Tier
 
 
@@ -19,8 +22,13 @@ class ManagePage(SuperUserCheckMixin, TemplateView):
 
 class MakeCoalition(SuperUserCheckMixin, View):
 	def post(self, request):
+		"""
+
+		:param request:
+		:return:
+		"""
 		ft_api = FtApi()
-		coalitions = ft_api.get_data(url="blocs/27")["coalitions"]
+		coalitions: Iterable[Dict[str, str]] = ft_api.get_data(url="blocs/27")["coalitions"]
 		for coalition in coalitions:
 			if Coalition.objects.filter(id=coalition["id"]).exists():
 				pass
@@ -35,8 +43,8 @@ class MakeCoalition(SuperUserCheckMixin, View):
 
 class MakeFtUser(SuperUserCheckMixin, View):
 	def post(self, request):
-		ft_api = FtApi()
-		page = count_page(ft_api.get_data(url="campus/29")["users_count"])
+		ft_api: FtApi = FtApi()
+		page: int = count_page(ft_api.get_data(url="campus/29")["users_count"])
 		crawlings = [ft_api.get_data(url="campus/29/users", page=x, per_page=100, sort="login") for x in range(1, int(page) + 1)]
 		for crawling in crawlings:
 			for data in crawling:
@@ -62,12 +70,12 @@ class MakeFtUser(SuperUserCheckMixin, View):
 		return render(request, "manage_complete.html", {"task": "MakeFtUser"})
 
 
-# FtUser에 있던 coalition 포인트를 Tier로 옮김 (추후 삭제)
+# FtUser에 있던 coalition 포인트와 Tier 관련 데이터를 Tier로 옮김 (마이그레이션용, 추후 삭제)
 class MoveCoalitionPoint(SuperUserCheckMixin, View):
 	def post(self, request):
-		ft_users = FtUser.objects.filter(is_alive=True)
+		ft_users: Iterable[FtUser] = FtUser.objects.filter(is_alive=True)
 		for ft_user in ft_users:
-			tier = Tier(FtUser=ft_user)
+			tier: Tier = Tier(FtUser=ft_user)
 			tier.coalition_point = ft_user.coalition_point
 			if ft_user.coalition_point == 0:
 				tier.name = "Unranked"

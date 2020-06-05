@@ -1,9 +1,12 @@
+from typing import Sequence, Union
 from django.db import models
+
+from .models import Coalition, FtUser
 
 
 class CoalitionManager(models.Manager):
-	def create(self, id=None, name=None, color=None):
-		coalition = self.model(
+	def create(self, id: int = None, name: str = None, color: str = None) -> Coalition:
+		coalition: Coalition = self.model(
 			id=id,
 			name=name,
 			color=color,
@@ -13,8 +16,15 @@ class CoalitionManager(models.Manager):
 
 
 class FtUserManager(models.Manager):
-	def create(self, id=None, login=None, is_alive=None, coalition=None, coalition_point=None):
-		ft_user = self.model(
+	def create(
+			self,
+			id: int = None,
+			login: str = None,
+			is_alive: bool = None,
+			coalition: Coalition = None,
+			coalition_point: int = None,
+	) -> FtUser:
+		ft_user: FtUser = self.model(
 			id=id,
 			login=login,
 			is_alive=is_alive,

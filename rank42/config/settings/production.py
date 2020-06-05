@@ -1,3 +1,7 @@
+"""
+프로덕션 환경에서 사용되는 설정값
+현재 heroku 환경에서 작동중
+"""
 from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
