@@ -1,13 +1,8 @@
-import requests, json
-from django_pandas.io import read_frame
 from typing import Dict, Any, Iterable
 
 from django.shortcuts import render, redirect
-from django.conf import settings
 from django.views.generic.base import TemplateView
-from django.views.generic.list import ListView
 from django.views import View
-from django.urls import reverse
 
 from .custom import count_page, SuperUserCheckMixin
 from .ftapi import FtApi
@@ -21,12 +16,10 @@ class ManagePage(SuperUserCheckMixin, TemplateView):
 
 
 class MakeCoalition(SuperUserCheckMixin, View):
+	"""
+	27 blocs에 있는 특정 Coalition을 만
+	"""
 	def post(self, request):
-		"""
-
-		:param request:
-		:return:
-		"""
 		ft_api = FtApi()
 		coalitions: Iterable[Dict[str, str]] = ft_api.get_data(url="blocs/27")["coalitions"]
 		for coalition in coalitions:
@@ -42,6 +35,9 @@ class MakeCoalition(SuperUserCheckMixin, View):
 
 
 class MakeFtUser(SuperUserCheckMixin, View):
+	"""
+	42 한국 캠퍼스 유저들을 생성함
+	"""
 	def post(self, request):
 		ft_api: FtApi = FtApi()
 		page: int = count_page(ft_api.get_data(url="campus/29")["users_count"])
@@ -85,6 +81,9 @@ class MoveCoalitionPoint(SuperUserCheckMixin, View):
 
 
 class Main(View):
+	"""
+	메인페이지
+	"""
 	def get(self, request, **kwargs):
 		if request.GET.get('login'):
 			return redirect('search', login=request.GET.get('login'))
@@ -92,6 +91,9 @@ class Main(View):
 
 
 class List(TemplateView):
+	"""
+	Rank42의 본과정 학생들 전체 랭킹 페이지
+	"""
 	template_name = "list.html"
 
 	def get_context_data(self, **kwargs):
@@ -105,6 +107,9 @@ class List(TemplateView):
 
 
 class Search(TemplateView):
+	"""
+	특정 유저의 랭킹 및 자세한 정보를 보여주는 페이지
+	"""
 	template_name = "search.html"
 
 	@staticmethod
