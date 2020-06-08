@@ -26,5 +26,5 @@
 
 ## 폴더설명
 - .idea : Pycharm IDE 관련 설정  
-- api_test : 42api 관련 테스트 코드(삭제 예정)  
+- api_test : 42api 관련 테스트 코드(사실상 낙서장)  
 - rank42 : Rank42 관련 코드  
