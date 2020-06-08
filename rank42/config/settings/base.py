@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main.apps.MainConfig',
     'manager.apps.ManagerConfig',
+    'piscine.apps.PiscineConfig',
 ]
 
 MIDDLEWARE = [
