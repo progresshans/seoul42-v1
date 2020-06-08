@@ -23,3 +23,8 @@
 ```
 
 > 42Api 키발급은 [https://profile.intra.42.fr/oauth/applications](https://profile.intra.42.fr/oauth/applications)에서 'REGISTER A NEW APP'을 통해 가능합니다.
+
+## 폴더설명
+- .idea : Pycharm IDE 관련 설정  
+- api_test : 42api 관련 테스트 코드(삭제 예정)  
+- rank42 : Rank42 관련 코드  
