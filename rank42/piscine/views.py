@@ -60,3 +60,17 @@ class UpdatePiscineFtUser(SuperUserCheckMixin, View):
 				piscine_ft_user.piscine_level=Decimal(detail_data["cursus_users"][0]["level"])
 				piscine_ft_user.save()
 		return render(request, "piscine/piscine_manage_complete.html", {"task": "피신 유저의 정보를 업데이트 했습니다."})
+
+
+class List(TemplateView):
+	"""
+	Rank42의 본과정 학생들 전체 랭킹 페이지
+	"""
+	template_name = "piscine/piscine_list.html"
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		piscine_ft_users = PiscineFtUser.objects.filter(is_public=True).order_by('-piscine_level')
+
+		context['piscine_ft_users'] = piscine_ft_users
+		return context
