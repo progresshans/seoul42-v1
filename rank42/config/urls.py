@@ -28,4 +28,7 @@ urlpatterns = [
 
 	# Manage App 관련 url
 	path('manager/', include('manager.urls')),
+
+	# piscine App 관련 url
+	path('piscine/', include('piscine.urls')),
 ]

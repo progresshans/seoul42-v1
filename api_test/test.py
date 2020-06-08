@@ -53,4 +53,4 @@ print(oauth_request.json())
 # 	page = int(page) + 1 if number % (100 * int(page)) != 0 else int(page)
 # 	return page
 
-print(requests.get(f'{api_url}events/4579', params={'access_token': access_token}).json())
+print(requests.get(f'{api_url}users/jinykim', params={'access_token': access_token}).json())
