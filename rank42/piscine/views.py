@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.views import View
-from datetime import datetime
+from datetime import datetime, timedelta
 from decimal import Decimal
 
 from main.custom import count_page, SuperUserCheckMixin
@@ -46,16 +46,17 @@ class MakePiscineFtUser(SuperUserCheckMixin, View):
 
 
 class UpdatePiscineFtUser(SuperUserCheckMixin, View):
+	@staticmethod
+	def is_one_hour(updated_at):
+		one_hour_ago = datetime.now() - timedelta(hours=1)
+		return 1 if ((one_hour_ago - updated_at).seconds // 3600) >= 1 else 0
+
 	def post(self, request):
 		ft_api: FtApi = FtApi()
 		piscine_ft_users = PiscineFtUser.objects.filter(is_public=True)
 		for piscine_ft_user in piscine_ft_users:
-			crawling = ft_api.get_data(url=f"users/{piscine_ft_user.id}")
-			for project_user in crawling["projects_users"]:
-				if project_user["validated?"] == "true" and 'Piscine' in project_user["project"]["name"] and project_user["final_mark"] >= 50:
-					piscine_project, _ = PiscineProject.objects.get_or_create(
-						id=project_user["project"]["id"],
-						name=project_user["project"]["name"],
-					)
-					piscine_ft_user.piscine_projects.add(piscine_project)
-		return render(request, "piscine/piscine_manage_complete.html", {"task": "UpdatePiscineFtUser"})
+			if not self.is_one_hour(piscine_ft_user.updated_at):
+				detail_data = ft_api.get_data(url=f'users/{piscine_ft_user.id}')
+				piscine_ft_user.piscine_level=Decimal(detail_data["cursus_users"][0]["level"])
+				piscine_ft_user.save()
+		return render(request, "piscine/piscine_manage_complete.html", {"task": "피신 유저의 정보를 업데이트 했습니다."})
