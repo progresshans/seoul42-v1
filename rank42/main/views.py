@@ -25,8 +25,8 @@ class List(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		ft_users = FtUser.objects.filter(is_alive=True).exclude(coalition_point=0).order_by('-coalition_point')
-		unrank_ft_users = FtUser.objects.filter(is_alive=True, coalition_point=0)
+		ft_users = FtUser.objects.filter(is_alive=True).exclude(tier__coalition_point=0).order_by("-tier__coalition_point")
+		unrank_ft_users = FtUser.objects.filter(is_alive=True, tier__coalition_point=0)
 		rank_tier = RankTier(ft_users.count())
 
 		context['ft_users'], context['unrank_ft_users'] = rank_tier.set_tier(ft_users, unrank_ft_users)
@@ -49,7 +49,7 @@ class Search(TemplateView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		login = kwargs['login']
-		ft_users = FtUser.objects.filter(is_alive=True).order_by('-coalition_point')
+		ft_users = FtUser.objects.filter(is_alive=True).order_by('-tier__coalition_point')
 		ft_user = ft_users.get(login=login)
 		ft_user.percent = round((ft_user.tier.tier_rank / ft_users.count()) * 100, 1)
 		if ft_user.tier.coalition_point != 0:
@@ -77,8 +77,7 @@ class UpdateFtUser(View):
 		else:
 			ft_user.is_alive = False
 			ft_user.save()
-		ft_users = FtUser.objects.filter(is_alive=True).exclude(coalition_point=0).order_by('-coalition_point')
-		unrank_ft_users = FtUser.objects.filter(is_alive=True, coalition_point=0)
+		ft_users = FtUser.objects.filter(is_alive=True).exclude(tier__coalition_point=0).order_by('-tier__coalition_point')
 		rank_tier = RankTier(ft_users.count())
-		rank_tier.set_tier(ft_users, unrank_ft_users)
+		rank_tier.set_tier(ft_users)
 		return redirect('search', login=ft_user.login)
