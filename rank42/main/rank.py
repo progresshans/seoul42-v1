@@ -84,15 +84,6 @@ class RankTier:
 			split_tier(self.bronze, self.bronze_name, self.bronze_img, tier_class_list)
 			self.tier_class_list: List[SingleTier] = tier_class_list
 
-	# def update_ft_user(self, ft_user):
-	# 	tier = Tier.objects.get(id=ft_user.id)
-	# 	ft_api = FtApi()
-	# 	coalition_data = ft_api.get_data(url=f'users/{ft_user.id}/coalitions_users')
-	# 	tier.coalition_point = coalition_data[0]["score"]
-	# 	tier.save()
-	# 	ft_users = FtUser.objects.filter(is_alive=True).exclude(coalition_point=0).order_by('-coalition_point')
-	# 	return self.set_tier(ft_users)
-
 	def set_tier(self, ft_users: Sequence[FtUser], unrank_ft_users: Sequence[FtUser] = None):
 		"""
 		본과 유저들의 queryset을 가지고 전체적으로 티어를 설정함
