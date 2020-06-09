@@ -25,6 +25,7 @@ urlpatterns = [
 	path('', main.views.Main.as_view(), name="main"),
 	path('list/', main.views.List.as_view(), name="list"),
 	path('search/<str:login>/', main.views.Search.as_view(), name="search"),
+	path('update/ft-user/', main.views.UpdateFtUser.as_view(), name="update_ft_user"),
 
 	# Manage App 관련 url
 	path('manager/', include('manager.urls')),

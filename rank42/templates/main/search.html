@@ -43,10 +43,18 @@
     </div>
     <div class="row">
         <div class="col-6">
-            <button type="button" class="btn btn-primary btn-lg btn-block">점수 갱신</button>
+            <form action="{% url 'update_ft_user' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ ft_user.id }}">
+                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                    점수 갱신
+                </button>
+            </form>
         </div>
         <div class="col-6">
-            <button type="button" class="btn btn-secondary btn-lg btn-block">티어 그래프</button>
+            <button type="button" class="btn btn-secondary btn-lg btn-block disabled" onclick="alert('업데이트 예정입니다.');">
+                티어 그래프
+            </button>
         </div>
     </div>
     <div class="row">
@@ -60,7 +68,7 @@
                         <div class="card-body">
                             <h5 class="card-title" style="color: blue;">{{ ft_user.tier.tier_name }}</h5>
                             <p class="card-text">{{ ft_user.tier.coalition_point }}점</p>
-                            <p class="card-text"><small class="text-muted">점수 마지막 업데이트 분전</small></p>
+                            <p class="card-text"><small class="text-muted">점수 마지막 업데이트 {{ ft_user.tier.updated_at|date:"Y-m-d H:i:s" }}</small></p>
                         </div>
                     </div>
                 </div>

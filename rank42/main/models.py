@@ -20,7 +20,6 @@ class FtUser(models.Model):
 	login: str = models.CharField(verbose_name="로그인 아이디", max_length=20)
 	is_alive: bool = models.BooleanField(verbose_name="생존여부", default=False)
 	coalition: Coalition = models.ForeignKey(Coalition, verbose_name="길드", on_delete=models.CASCADE, blank=True, null=True)
-	coalition_point: int = models.IntegerField(verbose_name="길드 포인트", blank=True, null=True)
 	created_at: datetime = models.DateTimeField(auto_now_add=True)
 	updated_at: datetime = models.DateTimeField(auto_now=True)
 
@@ -32,6 +31,8 @@ class Tier(models.Model):
 	coalition_point: int = models.IntegerField(verbose_name="길드 포인트", blank=True, null=True)
 	tier_name: str = models.CharField(max_length=13, blank=True, null=True)
 	tier_rank: str = models.IntegerField(blank=True, null=True)
+	created_at: datetime = models.DateTimeField(auto_now_add=True)
+	updated_at: datetime = models.DateTimeField(auto_now=True)
 
 
 class UpdateBranch(models.Model):
