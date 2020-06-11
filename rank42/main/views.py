@@ -25,7 +25,9 @@ class List(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		ft_users = FtUser.objects.filter(is_alive=True).exclude(tier__coalition_point=0).order_by("-tier__coalition_point")
+		# 유저 모델을 불러와서 랭크 티어를 다시 지정함
+		ft_users = FtUser.objects.filter(is_alive=True).exclude(tier__coalition_point=0).order_by(
+			"-tier__coalition_point")
 		unrank_ft_users = FtUser.objects.filter(is_alive=True, tier__coalition_point=0)
 		rank_tier = RankTier(ft_users.count())
 
@@ -41,6 +43,13 @@ class Search(TemplateView):
 
 	@staticmethod
 	def get_next_tier_name(ft_users, ft_user):
+		"""
+		현재 유저의 티어에서 바로 다음 티어의 이름과 필요한 점수를 찾아서 리턴
+
+		:param ft_users: ft_user를 기준으로 뒤집어진 유저 모델 리스트
+		:param ft_user: 현재 유저
+		:return: (다음 티어 이름, 다음 티어까지 필요한 점수), 다음 티어가 안 존재하면 (0,0) 리턴
+		"""
 		for temp_user in ft_users:
 			if temp_user.tier.tier_name != ft_user.tier.tier_name:
 				return temp_user.tier.tier_name, temp_user.tier.coalition_point - ft_user.tier.coalition_point
@@ -53,7 +62,10 @@ class Search(TemplateView):
 		ft_user = ft_users.get(login=login)
 		ft_user.percent = round((ft_user.tier.tier_rank / ft_users.count()) * 100, 1)
 		if ft_user.tier.coalition_point != 0:
-			ft_user.next_tier_name, ft_user.next_tier_point = self.get_next_tier_name(reversed(list(ft_users[:ft_user.tier.tier_rank - 1])), ft_user)
+			ft_user.next_tier_name, ft_user.next_tier_point = self.get_next_tier_name(
+				reversed(list(ft_users[:ft_user.tier.tier_rank - 1])),
+				ft_user,
+			)
 			ft_user.need_peer_evaluation = (ft_user.next_tier_point // 42) + 1
 			ft_user.tier_img = RankTier().get_tier_img(ft_user.tier.tier_name)
 		else:
@@ -77,7 +89,8 @@ class UpdateFtUser(View):
 		else:
 			ft_user.is_alive = False
 			ft_user.save()
-		ft_users = FtUser.objects.filter(is_alive=True).exclude(tier__coalition_point=0).order_by('-tier__coalition_point')
+		ft_users = FtUser.objects.filter(is_alive=True).exclude(tier__coalition_point=0).order_by(
+			'-tier__coalition_point')
 		rank_tier = RankTier(ft_users.count())
 		rank_tier.set_tier(ft_users)
 		return redirect('search', login=ft_user.login)
