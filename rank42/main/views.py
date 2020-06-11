@@ -26,7 +26,8 @@ class List(TemplateView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		# 유저 모델을 불러와서 랭크 티어를 다시 지정함
-		ft_users = FtUser.objects.filter(is_alive=True).exclude(tier__coalition_point=0).order_by("-tier__coalition_point")
+		ft_users = FtUser.objects.filter(is_alive=True).exclude(tier__coalition_point=0).order_by(
+			"-tier__coalition_point")
 		unrank_ft_users = FtUser.objects.filter(is_alive=True, tier__coalition_point=0)
 		rank_tier = RankTier(ft_users.count())
 
@@ -61,7 +62,10 @@ class Search(TemplateView):
 		ft_user = ft_users.get(login=login)
 		ft_user.percent = round((ft_user.tier.tier_rank / ft_users.count()) * 100, 1)
 		if ft_user.tier.coalition_point != 0:
-			ft_user.next_tier_name, ft_user.next_tier_point = self.get_next_tier_name(reversed(list(ft_users[:ft_user.tier.tier_rank - 1])), ft_user)
+			ft_user.next_tier_name, ft_user.next_tier_point = self.get_next_tier_name(
+				reversed(list(ft_users[:ft_user.tier.tier_rank - 1])),
+				ft_user,
+			)
 			ft_user.need_peer_evaluation = (ft_user.next_tier_point // 42) + 1
 			ft_user.tier_img = RankTier().get_tier_img(ft_user.tier.tier_name)
 		else:
@@ -85,7 +89,8 @@ class UpdateFtUser(View):
 		else:
 			ft_user.is_alive = False
 			ft_user.save()
-		ft_users = FtUser.objects.filter(is_alive=True).exclude(tier__coalition_point=0).order_by('-tier__coalition_point')
+		ft_users = FtUser.objects.filter(is_alive=True).exclude(tier__coalition_point=0).order_by(
+			'-tier__coalition_point')
 		rank_tier = RankTier(ft_users.count())
 		rank_tier.set_tier(ft_users)
 		return redirect('search', login=ft_user.login)

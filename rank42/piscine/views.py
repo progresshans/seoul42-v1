@@ -26,14 +26,16 @@ class MakePiscineFtUser(SuperUserCheckMixin, View):
 	def post(self, request):
 		ft_api: FtApi = FtApi()
 		page: int = count_page(ft_api.get_data(url="campus/29")["users_count"])
-		crawlings = [ft_api.get_data(url="campus/29/users", page=x, per_page=100, sort="login") for x in range(1, int(page) + 1)]
+		crawlings = [ft_api.get_data(url="campus/29/users", page=x, per_page=100, sort="login")
+		             for x in range(1, int(page) + 1)]
 		for crawling in crawlings:
 			for data in crawling:
 				_, is_have = TempFtUser.objects.get_or_create(id=data["id"])
 				if is_have:
 					detail_data = ft_api.get_data(url=f'users/{data["id"]}')
 					if len(detail_data["cursus_users"]) == 1 and not detail_data["cursus_users"][0]["end_at"] is None:
-						if PiscineFtUser.objects.filter(id=data["id"]).exists() or not self.is_piscine_user(detail_data["cursus_users"][0]["end_at"]):
+						if (PiscineFtUser.objects.filter(id=data["id"]).exists()
+								or not self.is_piscine_user(detail_data["cursus_users"][0]["end_at"])):
 							pass
 						else:
 							PiscineFtUser.objects.create(

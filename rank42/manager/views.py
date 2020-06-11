@@ -39,7 +39,12 @@ class MakeFtUser(SuperUserCheckMixin, View):
 	def post(self, request):
 		ft_api: FtApi = FtApi()
 		page: int = count_page(ft_api.get_data(url="campus/29")["users_count"])
-		crawlings = [ft_api.get_data(url="campus/29/users", page=x, per_page=100, sort="login") for x in range(1, int(page) + 1)]
+		crawlings = [ft_api.get_data(
+			url="campus/29/users",
+			page=x,
+			per_page=100,
+			sort="login"
+		) for x in range(1, int(page) + 1)]
 		for crawling in crawlings:
 			for data in crawling:
 				if FtUser.objects.filter(id=data["id"]).exists():
