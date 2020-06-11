@@ -46,6 +46,9 @@ class MakePiscineFtUser(SuperUserCheckMixin, View):
 
 
 class UpdatePiscineFtUser(SuperUserCheckMixin, View):
+	"""
+	피시너들의 정보를 업데이트 함.
+	"""
 	@staticmethod
 	def is_one_hour(updated_at):
 		one_hour_ago = datetime.now() - timedelta(hours=1)
@@ -64,7 +67,7 @@ class UpdatePiscineFtUser(SuperUserCheckMixin, View):
 
 class List(TemplateView):
 	"""
-	Rank42의 본과정 학생들 전체 랭킹 페이지
+	Rank42의 피시너 전체 랭킹 페이지
 	"""
 	template_name = "piscine/piscine_list.html"
 

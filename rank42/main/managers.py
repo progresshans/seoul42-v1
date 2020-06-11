@@ -3,6 +3,7 @@ from django.db import models
 
 class CoalitionManager(models.Manager):
 	def create(self, id: int = None, name: str = None, color: str = None):
+		# Coalition 모델을 생성하는 메소드
 		coalition = self.model(
 			id=id,
 			name=name,
@@ -21,6 +22,7 @@ class FtUserManager(models.Manager):
 			coalition = None,
 			coalition_point: int = None,
 	):
+		# FtUser 모델을 생성하는 메소드
 		ft_user = self.model(
 			id=id,
 			login=login,

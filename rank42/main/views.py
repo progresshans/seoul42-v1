@@ -25,6 +25,7 @@ class List(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
+		# 유저 모델을 불러와서 랭크 티어를 다시 지정함
 		ft_users = FtUser.objects.filter(is_alive=True).exclude(tier__coalition_point=0).order_by("-tier__coalition_point")
 		unrank_ft_users = FtUser.objects.filter(is_alive=True, tier__coalition_point=0)
 		rank_tier = RankTier(ft_users.count())
@@ -41,6 +42,13 @@ class Search(TemplateView):
 
 	@staticmethod
 	def get_next_tier_name(ft_users, ft_user):
+		"""
+		현재 유저의 티어에서 바로 다음 티어의 이름과 필요한 점수를 찾아서 리턴
+
+		:param ft_users: ft_user를 기준으로 뒤집어진 유저 모델 리스트
+		:param ft_user: 현재 유저
+		:return: (다음 티어 이름, 다음 티어까지 필요한 점수), 다음 티어가 안 존재하면 (0,0) 리턴
+		"""
 		for temp_user in ft_users:
 			if temp_user.tier.tier_name != ft_user.tier.tier_name:
 				return temp_user.tier.tier_name, temp_user.tier.coalition_point - ft_user.tier.coalition_point
