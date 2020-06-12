@@ -1,10 +1,9 @@
 """
 rank42에서 사용되는 Rank 관련 코드
 """
-from typing import List, Any, Callable, Sequence
+from typing import List, Callable, Sequence
 
 from .models import Tier, FtUser
-from django_pandas.io import read_frame
 
 
 class SingleTier:
@@ -51,7 +50,18 @@ class RankTier:
 					tier_class_list: List[SingleTier],
 					flag: int = None,
 			) -> None:
+				"""
+				한 티어에 존재하는 인원을 5개로 나눠 각각의 티어 이름을 리스트에 추가함
+
+				:param number: 해당 티어에 존재하는 인원수
+				:param tier_name: 해당 티어 이름 ex) 브론즈
+				:param tier_img: 해당 티어의 이미지 url
+				:param tier_class_list: 조건에 맞게 설정된 세부 티어 클래스를 담음
+				:param flag: 5단계의 티어를 나눌지 말지 설정하는 플래그, 0은 나눔, 1은 안나눔 ex) challenger 같은 티어에 사용
+				:return: 리턴 값은 없고, tier_class_list에 담음.
+				"""
 				if not flag:
+					# flag가 없을 경우, 5개의 세부 티어로 나눠서 설정함
 					numbers: list[int] = []
 					numbers_append: Callable[[int], None] = numbers.append
 					for i in range(5, 0, -1):
@@ -64,12 +74,14 @@ class RankTier:
 							single_tier: SingleTier = SingleTier(f"{tier_name}{i + 1}", tier_img)
 							tier_class_list_append(single_tier)
 				else:
+					# flag가 존재할 경우(challenger 티어 같은 경우), 따로 안나눔
 					tier_class_list_append: Callable[[SingleTier], None] = tier_class_list.append
 					for _ in range(number):
 						single_tier: SingleTier = SingleTier(tier_name, tier_img)
 						tier_class_list_append(single_tier)
 
 			self.rank_users_number: int = int(number)
+			# 각 티어의 인원과 조건에 맞게 split_tier를 통해 SingleTier 클래스를 만들어, tier_class_list에 담음.
 			self.challenger: int = round(number * (self.challenger_per / 100))
 			split_tier(self.challenger, self.challenger_name, self.challenger_img, tier_class_list, 1)
 			self.diamond: int = round(number * (self.diamond_per / 100))

@@ -39,7 +39,7 @@ class FtApi:
 		:param sort: 정렬 기준
 		:return: 42api json 파싱 데이터
 		"""
-		params: Dict[str, Union[str, int]] = {
+		params: dict = {
 			'access_token': self.get_access_token(),
 			'page': page if page else '',
 			'per_page': per_page if per_page else '',
