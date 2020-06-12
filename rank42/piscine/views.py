@@ -17,6 +17,7 @@ class MakePiscineFtUser(SuperUserCheckMixin, View):
 	"""
 	42 한국 캠퍼스 유저들중 피신중인 유저를 생성함
 	"""
+
 	@staticmethod
 	def is_piscine_user(end):
 		end_date = datetime.strptime(end.split('.')[0], '%Y-%m-%dT%H:%M:%S')
@@ -51,18 +52,20 @@ class UpdatePiscineFtUser(SuperUserCheckMixin, View):
 	"""
 	피시너들의 정보를 업데이트 함.
 	"""
+
 	@staticmethod
 	def is_one_hour(updated_at):
 		one_hour_ago = datetime.now() - timedelta(hours=1)
-		return 1 if ((one_hour_ago - updated_at).seconds // 3600) >= 1 else 0
+		time_difference = one_hour_ago - updated_at
+		return 1 if ((time_difference.seconds + (time_difference.days * 3600 * 24)) // 3600) >= 1 else 0
 
 	def post(self, request):
 		ft_api: FtApi = FtApi()
 		piscine_ft_users = PiscineFtUser.objects.filter(is_public=True)
 		for piscine_ft_user in piscine_ft_users:
-			if not self.is_one_hour(piscine_ft_user.updated_at):
+			if self.is_one_hour(piscine_ft_user.updated_at):
 				detail_data = ft_api.get_data(url=f'users/{piscine_ft_user.id}')
-				piscine_ft_user.piscine_level=Decimal(detail_data["cursus_users"][0]["level"])
+				piscine_ft_user.piscine_level = Decimal(detail_data["cursus_users"][0]["level"])
 				piscine_ft_user.save()
 		return render(request, "piscine/piscine_manage_complete.html", {"task": "피신 유저의 정보를 업데이트 했습니다."})
 
