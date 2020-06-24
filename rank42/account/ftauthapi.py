@@ -13,16 +13,18 @@ class FtAuthApi:
 	ft_oauth_url = "https://api.intra.42.fr/oauth/token"
 	ft_api_url = "https://api.intra.42.fr/v2/"
 
-	def __init__(self):
+	def __init__(self, code):
 		self.ft_uid_key = settings.FT_UID_KEY
 		self.ft_secret_key = settings.FT_SECRET_KEY
 
-	def set_access_token(self) -> int:
+	def set_access_token(self, code, redirect_url) -> int:
 		"""42api에 접속하기 위한 access_token을 반환"""
 		oauth_data: Dict[str, str] = {
-			'grant_type': 'client_credentials',
+			'grant_type': 'authorization_code',
 			'client_id': self.ft_uid_key,
 			'client_secret': self.ft_secret_key,
+			'code': code,
+			'redirect_url': redirect_url,
 		}
 		try:
 			self.ft_access_token: str = requests.post(self.ft_oauth_url, data=oauth_data).json()['access_token']
@@ -35,7 +37,7 @@ class FtAuthApi:
 
 	def get_me(self):
 		params: dict = {
-			'access_token': self.get_access_token(),
+			'access_token': self.get_access_token,
 		}
 		return requests.get(f"{self.ft_api_url}me", params=params).json()
 
