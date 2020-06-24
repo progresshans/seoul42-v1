@@ -3,7 +3,7 @@ from django.views.generic.base import TemplateView
 from django.views import View
 from .custom import get_random_string, authenticating_ft_api
 from django.conf import settings
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from .models import MyUser
 
 
@@ -32,8 +32,10 @@ class FtApiSignIn(View):
 		if request.session.get('ft_api_state') and not request.GET.get('state') == request.session['ft_api_state']:
 			return render(request, "account/sign_in_error.html", {"task": "로그인 에러입니다. 다시 시도하세요."})
 		else:
-			ft_auth_api, ft_user_data, is_exist = authenticating_ft_api(request.GET.get('code'), reverse('ft-login'))
-			if is_exist:
-				request.session['login_user'] = ft_user_data["login"]
-
-				login(request)
+			ft_auth_api, ft_user_data = authenticating_ft_api(request.GET.get('code'), reverse('ft-login'))
+			request.session['login_user'] = ft_user_data["login"]
+			user = authenticate(request=request, login=ft_user_data["login"])
+			if user:
+				login(request, user)
+			else:
+				pass
