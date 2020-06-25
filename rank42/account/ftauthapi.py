@@ -24,7 +24,7 @@ class FtAuthApi:
 			'client_id': self.ft_uid_key,
 			'client_secret': self.ft_secret_key,
 			'code': code,
-			'redirect_url': redirect_url,
+			'redirect_uri': redirect_url,
 		}
 		try:
 			self.ft_access_token: str = requests.post(self.ft_oauth_url, data=oauth_data).json()['access_token']
@@ -37,7 +37,7 @@ class FtAuthApi:
 
 	def get_me(self):
 		params: dict = {
-			'access_token': self.get_access_token,
+			'access_token': self.get_access_token(),
 		}
 		return requests.get(f"{self.ft_api_url}me", params=params).json()
 

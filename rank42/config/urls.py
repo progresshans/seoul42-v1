@@ -24,6 +24,7 @@ urlpatterns = [
 
 	# Account 관련 url
 	path('login', account.views.SignInPage.as_view(), name="login"),
+	path('logout', account.views.LogOut.as_view(), name="logout"),
 	path('ft-login', account.views.FtApiSignIn.as_view(), name="ft_login"),
 
 	# Main App 관련 url

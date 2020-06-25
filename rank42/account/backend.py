@@ -6,9 +6,12 @@ class RequestAuthBackend(ModelBackend):
     def authenticate(self, request, login=None, **kwargs):
         try:
             user = MyUser.objects.get(login=login)
-            if request.session['login_user'] == user:
-                return user
-            else:
-                return None
+            return user
+        except MyUser.DoesNotExist:
+            return None
+
+    def get_user(self, login):
+        try:
+            return MyUser.objects.get(pk=login)
         except MyUser.DoesNotExist:
             return None
