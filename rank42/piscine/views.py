@@ -66,6 +66,8 @@ class UpdatePiscineFtUser(SuperUserCheckMixin, View):
 			if self.is_one_hour(piscine_ft_user.updated_at):
 				detail_data = ft_api.get_data(url=f'users/{piscine_ft_user.id}')
 				piscine_ft_user.piscine_level = Decimal(detail_data["cursus_users"][0]["level"])
+				if len(detail_data["cursus_users"]) == 2:
+					piscine_ft_user.is_pass = True
 				piscine_ft_user.save()
 		return render(request, "piscine/piscine_manage_complete.html", {"task": "피신 유저의 정보를 업데이트 했습니다."})
 
