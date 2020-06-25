@@ -19,6 +19,7 @@ class PiscineFtUser(models.Model):
 	is_public: bool = models.BooleanField(verbose_name="공개여부", default=False)
 	piscine_level = models.DecimalField(verbose_name="피씬레벨", max_digits=4, decimal_places=2)
 	piscine_projects = models.ManyToManyField(PiscineProject, blank=True)
+	is_pass = models.BooleanField(verbose_name="합격여부", default=False)
 	created_at: datetime = models.DateTimeField(auto_now_add=True)
 	updated_at: datetime = models.DateTimeField(auto_now=True)
 
