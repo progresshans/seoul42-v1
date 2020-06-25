@@ -16,10 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import main.views
+import account.views
 
 urlpatterns = [
 	# Admin 관련 url
 	path('admin/', admin.site.urls),
+
+	# Account 관련 url
+	path('login', account.views.SignInPage.as_view(), name="login"),
+	path('logout', account.views.LogOut.as_view(), name="logout"),
+	path('ft-login', account.views.FtApiSignIn.as_view(), name="ft_login"),
 
 	# Main App 관련 url
 	path('', main.views.Main.as_view(), name="main"),

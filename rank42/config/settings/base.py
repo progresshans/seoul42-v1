@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'manager.apps.ManagerConfig',
     'piscine.apps.PiscineConfig',
+    'account.apps.AccountConfig',
 ]
 
 MIDDLEWARE = [
@@ -73,6 +74,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'account.backend.RequestAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -96,3 +102,5 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'account.MyUser'

@@ -11,16 +11,18 @@ def get_secret(setting, secrets=secrets):
         print(f"Set the {setting} environment variable")
 
 oauth_data = {
-	'grant_type': 'client_credentials',
+	'grant_type': 'authorization_code',
 	'client_id': get_secret("FT_UID_KEY"),
 	'client_secret': get_secret("FT_SECRET_KEY"),
+	'code': "66307ddb4be28cd9934454f0ce9c795b391ee64edc64c01bb191e3551aa7f295",
+	'redirect_uri':"https://rank42.herokuapp.com",
 }
 oauth_url = "https://api.intra.42.fr/oauth/token"
 api_url = "https://api.intra.42.fr/v2/"
 
 oauth_request = requests.post(oauth_url, data=oauth_data)
-access_token = oauth_request.json()['access_token']
 print(oauth_request.json())
+access_token = oauth_request.json()['access_token']
 
 # print(requests.get(f'{api_url}campus/29/users', params={'access_token': access_token}).json())
 # try:
@@ -53,4 +55,4 @@ print(oauth_request.json())
 # 	page = int(page) + 1 if number % (100 * int(page)) != 0 else int(page)
 # 	return page
 
-print(requests.get(f'{api_url}users/jinykim', params={'access_token': access_token}).json())
+print(requests.get(f'{api_url}me', params={'access_token': access_token}).json())
