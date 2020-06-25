@@ -20,9 +20,9 @@
                     <td><a href="https://profile.intra.42.fr/users/{{ piscine_ft_user.login }}">{{ piscine_ft_user.login }}</a></td>
                     <td>{{ piscine_ft_user.piscine_level }}</td>
                     {% if piscine_ft_user.is_pass == True %}
-                        <td>합</td>
+                        <td style="color: blue">합</td>
                     {% else %}
-                        <td>불</td>
+                        <td style="color: blue">불</td>
                     {% endif %}
                 </tr>
             {% endfor %}
