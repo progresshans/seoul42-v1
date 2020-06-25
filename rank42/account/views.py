@@ -38,4 +38,9 @@ class FtApiSignIn(View):
 			if user:
 				login(request, user)
 			else:
-				pass
+				user = MyUser.objects.create_user(
+					id=ft_user_data["id"],
+					email=ft_user_data["email"],
+					login=ft_user_data["login"],
+				)
+				login(request, user)

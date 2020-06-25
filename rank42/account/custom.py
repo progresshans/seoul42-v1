@@ -1,7 +1,6 @@
 import string
 import random
 from .ftauthapi import FtAuthApi
-from .models import MyUser
 
 
 def get_random_string(length):
