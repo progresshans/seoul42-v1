@@ -20,7 +20,7 @@ import account.views
 
 urlpatterns = [
 	# Admin 관련 url
-	# path('admin/', admin.site.urls),
+	path('admin/', admin.site.urls),
 
 	# Account 관련 url
 	path('login', account.views.SignInPage.as_view(), name="login"),
