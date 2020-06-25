@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container">
+    <div class="row">
+    	<article class="page col-12 col-md-12 col-lg-10">
+            <section class="article-container">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group my-3 position-relative">
+                        {{form.name}}
+                        <label class="form-placeholder" for="{{form.name.id_for_label}}">{{form.name.label}}</label>
+                    </div>
+                    <div class="form-group mt-5 position-relative">
+                        {{form.content}}
+                        <label class="form-placeholder" for="{{form.content.id_for_label}}">{{form.content.label}}</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        {{form.can_join}}
+                        <label class="custom-control-label" for="{{form.can_join.id_for_label}}">{{form.can_join.label}}</label>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <input class="btn" type="submit" value="등록하기">
+                    </div>
+                </form>
+            </section>
+        </article>
+    </div>
+</section>
+{% endblock %}
