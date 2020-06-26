@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="container">
+        <div class="row">
+            <div class="col-12">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">{{ form.name.label }}</span>
+                        </div>
+                        {{ form.name }}
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">{{ form.content.label }}</span>
+                        </div>
+                        {{ form.content }}
+                    </div>
+                    <div class="form-check">
+                        {{ form.can_join }}
+                        <label class="form-check-label" for="{{ form.can_join.id_for_label }}">
+                            {{ form.can_join.label }}
+                        </label>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="등록하기">
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}
