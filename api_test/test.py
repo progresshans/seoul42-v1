@@ -3,19 +3,20 @@ import requests, json, os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_INFO_FILE = os.path.join(BASE_DIR, 'rank42', 'config', 'settings', 'secret_info_file.json')
 with open(SECRET_INFO_FILE) as f:
-    secrets = json.loads(f.read())
+	secrets = json.loads(f.read())
+
+
 def get_secret(setting, secrets=secrets):
-    try:
-        return secrets[setting]
-    except KeyError:
-        print(f"Set the {setting} environment variable")
+	try:
+		return secrets[setting]
+	except KeyError:
+		print(f"Set the {setting} environment variable")
+
 
 oauth_data = {
-	'grant_type': 'authorization_code',
+	'grant_type': 'client_credentials',
 	'client_id': get_secret("FT_UID_KEY"),
 	'client_secret': get_secret("FT_SECRET_KEY"),
-	'code': "66307ddb4be28cd9934454f0ce9c795b391ee64edc64c01bb191e3551aa7f295",
-	'redirect_uri':"https://rank42.herokuapp.com",
 }
 oauth_url = "https://api.intra.42.fr/oauth/token"
 api_url = "https://api.intra.42.fr/v2/"
@@ -55,4 +56,4 @@ access_token = oauth_request.json()['access_token']
 # 	page = int(page) + 1 if number % (100 * int(page)) != 0 else int(page)
 # 	return page
 
-print(requests.get(f'{api_url}me', params={'access_token': access_token}).json())
+print(requests.get(f'{api_url}levels', params={'access_token': access_token}).json())
