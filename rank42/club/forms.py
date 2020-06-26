@@ -26,3 +26,18 @@ class ClubForm(forms.ModelForm):
 			'content': '소모임 소개',
 			'can_join': '가입 가능하게 하기',
 		}
+
+
+class ClubMemberForm(forms.ModelForm):
+	class Meta:
+		model = ClubMember
+		fields = ('introducing',)
+		widgets = {
+			'introducing': forms.Textarea(attrs={
+				'name': 'introducing_field',
+				'class': 'form-control input-group',
+			}),
+		}
+		labels = {
+			'introducing': '자기소개',
+		}

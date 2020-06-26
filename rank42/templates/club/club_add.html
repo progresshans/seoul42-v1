@@ -3,32 +3,30 @@
 {% block content %}
     <section class="container">
         <div class="row">
-            <article class="page col-12 col-md-12 col-lg-10">
-                <section class="article-container">
-                    <form action="" method="POST">
-                        {% csrf_token %}
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon3">{{ form.name.label }}</span>
-                            </div>
-                            {{ form.name }}
+            <div class="col-12">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">{{ form.name.label }}</span>
                         </div>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">{{ form.content.label }}</span>
-                            </div>
-                            {{ form.content }}
+                        {{ form.name }}
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">{{ form.content.label }}</span>
                         </div>
-                        <div class="form-check">
-                            {{ form.can_join }}
-                            <label class="form-check-label" for="{{ form.can_join.id_for_label }}">
-                                {{ form.can_join.label }}
-                            </label>
-                        </div>
-                        <input class="btn btn-primary" type="submit" value="등록하기">
-                    </form>
-                </section>
-            </article>
+                        {{ form.content }}
+                    </div>
+                    <div class="form-check">
+                        {{ form.can_join }}
+                        <label class="form-check-label" for="{{ form.can_join.id_for_label }}">
+                            {{ form.can_join.label }}
+                        </label>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="등록하기">
+                </form>
+            </div>
         </div>
     </section>
 {% endblock %}

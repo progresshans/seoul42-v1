@@ -11,6 +11,9 @@ class Club(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return str(self.name)
+
     def get_absolute_url(self):
         return f'/club/{self.id}/'
 
@@ -20,6 +23,6 @@ class ClubMember(models.Model):
     club = models.ForeignKey(Club, related_name='members', on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     introducing = models.TextField(verbose_name="자기소개")
-    is_join = models.BooleanField(verbose_name="가입여부")
+    is_join = models.BooleanField(verbose_name="가입여부", default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
