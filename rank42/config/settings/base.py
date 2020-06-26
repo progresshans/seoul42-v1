@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'manager.apps.ManagerConfig',
     'piscine.apps.PiscineConfig',
     'account.apps.AccountConfig',
+    'club.apps.ClubConfig',
 ]
 
 MIDDLEWARE = [

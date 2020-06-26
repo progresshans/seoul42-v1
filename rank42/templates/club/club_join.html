@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="container">
+        <div class="row">
+            <div class="col-12">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">{{ form.introducing.label }}</span>
+                        </div>
+                        {{ form.introducing }}
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="가입하기">
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}

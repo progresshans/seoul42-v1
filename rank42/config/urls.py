@@ -27,6 +27,9 @@ urlpatterns = [
 	path('logout', account.views.LogOut.as_view(), name="logout"),
 	path('ft-login', account.views.FtApiSignIn.as_view(), name="ft_login"),
 
+	# Club 관련 url
+	path('club/', include('club.urls')),
+
 	# Main App 관련 url
 	path('', main.views.Main.as_view(), name="main"),
 	path('list/', main.views.List.as_view(), name="list"),

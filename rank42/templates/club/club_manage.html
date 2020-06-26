@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>가입대기</h1>
+                {% for member in waiting %}
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ member.user.login }}</h5>
+                                <p class="card-text">{{ member.introducing }}</p>
+                                <form action="{{ club.get_absolute_url }}manage/" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="flag" value="join">
+                                    <input type="hidden" name="id" value="{{ member.id }}">
+                                    <button type="submit" class="btn btn-primary">허가</button>
+                                </form>
+                                <form action="{{ club.get_absolute_url }}manage/" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="flag" value="delete">
+                                    <input type="hidden" name="id" value="{{ member.id }}">
+                                    <button type="submit" class="btn btn-warning">거부</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-12">
+                <h1>가입중</h1>
+                {% for member in joining %}
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ member.user.login }}</h5>
+                                <form action="{{ club.get_absolute_url }}manage/" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="flag" value="delete">
+                                    <input type="hidden" name="id" value="{{ member.id }}">
+                                    <button type="submit" class="btn btn-warning">탈퇴</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

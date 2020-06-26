@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        <a href="{% url 'club_add' %}" class="btn btn-primary btn-lg btn-block">소모임 만들기</a>
+        <a href="{% url 'club_mypage' %}" class="btn btn-secondary btn-lg btn-block">가입한 소모임</a>
+        {% if not clubs %}
+            <h1>소모임이 존재하지 않습니다. 소모임을 만들어보세요</h1>
+        {% else %}
+            {% for club in clubs %}
+                <div class="col-12 mt-3">
+                    <div class="card">
+                        <h5 class="card-header">{{ club.name }}</h5>
+                        <div class="card-body">
+                            <p class="card-text">{{ club.content }}</p>
+                            <a href="{{ club.get_absolute_url }}" class="btn btn-primary">자세히 보기</a>
+{#                            {% if am_i_member %}#}
+{#                                <a href="{{ club.get_absolute_url }}join/" class="btn btn-primary">가입하기</a>#}
+{#                            {% endif %}#}
+{#                            {% if am_i_master %}#}
+{#                                <a href="{{ club.get_absolute_url }}manage/" class="btn btn-warning">관리하기</a>#}
+{#                            {% endif %}#}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <section class="article-container">
+            {% if is_paginated %}
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">&laquo;</span>
+                        </li>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ i }}</span>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">&raquo;</span>
+                        </li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </section>
+    </div>
+{% endblock %}
