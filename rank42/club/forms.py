@@ -17,7 +17,7 @@ class ClubForm(forms.ModelForm):
 			}),
 			'can_join': forms.CheckboxInput(attrs={
 				'name': 'can_join_field',
-				'class': 'custom-control-input',
+				'class': 'form-check-input',
 				'checked': 'checked'
 			}),
 		}

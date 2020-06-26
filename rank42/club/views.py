@@ -10,17 +10,24 @@ from .forms import ClubForm
 
 
 class ClubList(LoginRequiredMixin, ListView):
-    queryset = random.shuffle(Club.objects.all())
-    context_object_name = "clubs"
-    paginate_by = 20
-    template_name = "club/club_list.html"
+	queryset = Club.objects.all()
+	context_object_name = "clubs"
+	paginate_by = 30
+	template_name = "club/club_list.html"
 
 
 class ClubAdd(LoginRequiredMixin, CreateView):
-    template_name = "club/club_add.html"
-    form_class = ClubForm
-    success_url = reverse_lazy('club_list')
+	template_name = "club/club_add.html"
+	form_class = ClubForm
+	success_url = reverse_lazy('club_list')
 
-    def form_valid(self, form):
-        form.instance.master = self.request.user
-        return super().form_valid(form)
+	def form_valid(self, form):
+		form.instance.master = self.request.user
+		return super().form_valid(form)
+
+
+class ClubDetail(LoginRequiredMixin, DetailView):
+	model = Club
+	context_object_name = "club"
+	template_name = "club/club_detail.html"
+	pk_url_kwarg = 'club_id'

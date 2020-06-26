@@ -38,6 +38,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'piscine_list' %}">피신 랭킹</a>
                 </li>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'club_list' %}">소모임</a>
+                </li>
             </ul>
             <ul class="navbar-nav ml-lg-auto">
                 {% if user.is_authenticated %}
