@@ -10,8 +10,12 @@
                 <div class="card-body">
                     <h5 class="card-title">소모임장 : {{ club.master.login }}</h5>
                     <p class="card-text">{{ club.content }}</p>
-                    <a href="{{ club.get_absolute_url }}join/" class="btn btn-primary">가입하기</a>
-                    <a href="{{ club.get_absolute_url }}manage/" class="btn btn-warning">관리하기</a>
+                    {% if not am_i_member and not am_i_master %}
+                        <a href="{{ club.get_absolute_url }}join/" class="btn btn-primary">가입하기</a>
+                    {% endif %}
+                    {% if am_i_master %}
+                        <a href="{{ club.get_absolute_url }}manage/" class="btn btn-warning">관리하기</a>
+                    {% endif %}
                 </div>
                 <div class="card-footer text-muted">
                     멤버 :

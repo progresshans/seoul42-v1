@@ -7,4 +7,5 @@ urlpatterns = [
 	path('<int:club_id>/', views.ClubDetail.as_view(), name="club_detail"),
 	path('<int:club_id>/join/', views.ClubJoin.as_view(), name="club_detail"),
 	path('<int:club_id>/manage/', views.ClubManage.as_view(), name="club_manage"),
+	path('mypage/', views.ClubMyPage.as_view(), name="club_mypage"),
 ]

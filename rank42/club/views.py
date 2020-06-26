@@ -37,6 +37,14 @@ class ClubDetail(LoginRequiredMixin, DetailView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context["member_list"] = ClubMember.objects.filter(club=self.get_object(), is_join=True)
+		if ClubMember.objects.filter(club=self.get_object(), user=self.request.user).exists():
+			context["am_i_member"] = 0
+		else:
+			context["am_i_member"] = 1
+		if self.get_object().master == self.request.user:
+			context["am_i_master"] = 1
+		else:
+			context["am_i_member"] = 0
 		return context
 
 
@@ -80,3 +88,15 @@ class ClubManage(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 			club_member.is_join = True
 			club_member.save()
 		return HttpResponseRedirect(reverse('club_manage', kwargs={'club_id': club_id}))
+
+
+class ClubMyPage(LoginRequiredMixin, ListView):
+	context_object_name = 'mypage'
+	template_name = "club/club_mypage.html"
+
+	def get_queryset(self):
+		queryset = {
+			'waiting': ClubMember.objects.filter(user=self.request.user, is_join=False),
+			'joining': ClubMember.objects.filter(user=self.request.user, is_join=True),
+		}
+		return queryset
