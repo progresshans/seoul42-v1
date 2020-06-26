@@ -10,14 +10,14 @@
                 <div class="card-body">
                     <h5 class="card-title">소모임장 : {{ club.master.login }}</h5>
                     <p class="card-text">{{ club.content }}</p>
-                    <a href="#" class="btn btn-primary">가입하기</a>
-                    <a href="#" class="btn btn-warning">관리하기</a>
+                    <a href="{{ club.get_absolute_url }}join/" class="btn btn-primary">가입하기</a>
+                    <a href="{{ club.get_absolute_url }}manage/" class="btn btn-warning">관리하기</a>
                 </div>
                 <div class="card-footer text-muted">
                     멤버 :
-                    {% if not club.members.count == 0 %}
-                        {% for memeber in club.members %}
-                            <span>{{ member.login }}, </span>
+                    {% if member_list %}
+                        {% for member in member_list %}
+                            <span>{{ member.user.login }}, </span>
                         {% endfor %}
                     {% else %}
                         <span>아직 멤버가 없습니다! 첫번째 멤버가 되어보세요!</span>

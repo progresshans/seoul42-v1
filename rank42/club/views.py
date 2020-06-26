@@ -1,5 +1,6 @@
 import random
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -7,6 +8,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormMi
 from django.urls import reverse_lazy, reverse
 from .models import ClubMember, Club
 from .forms import ClubForm, ClubMemberForm
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 
 class ClubList(LoginRequiredMixin, ListView):
@@ -32,6 +34,11 @@ class ClubDetail(LoginRequiredMixin, DetailView):
 	template_name = "club/club_detail.html"
 	pk_url_kwarg = 'club_id'
 
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["member_list"] = ClubMember.objects.filter(club=self.get_object(), is_join=True)
+		return context
+
 
 class ClubJoin(LoginRequiredMixin, CreateView):
 	template_name = "club/club_join.html"
@@ -45,4 +52,31 @@ class ClubJoin(LoginRequiredMixin, CreateView):
 		return super().form_valid(form)
 
 
-class ClubManage()
+class ClubManage(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+	model = Club
+	template_name = "club/club_manage.html"
+	context_object_name = 'club'
+	pk_url_kwarg = 'club_id'
+
+	def test_func(self):
+		if self.get_object().master == self.request.user:
+			return True
+		else:
+			return False
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['waiting'] = ClubMember.objects.filter(club=self.get_object(), is_join=False)
+		context['joining'] = ClubMember.objects.filter(club=self.get_object(), is_join=True)
+		return context
+
+	def post(self, request, club_id):
+		flag = request.POST.get('flag')
+		if flag == "delete":
+			club_member = ClubMember.objects.get(id=int(request.POST.get('id')))
+			club_member.delete()
+		elif flag == "join":
+			club_member = ClubMember.objects.get(id=int(request.POST.get('id')))
+			club_member.is_join = True
+			club_member.save()
+		return HttpResponseRedirect(reverse('club_manage', kwargs={'club_id': club_id}))
