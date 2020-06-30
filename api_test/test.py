@@ -56,4 +56,4 @@ access_token = oauth_request.json()['access_token']
 # 	page = int(page) + 1 if number % (100 * int(page)) != 0 else int(page)
 # 	return page
 
-print(requests.get(f'{api_url}cursus/9', params={'access_token': access_token}).json())
+print(requests.get(f'{api_url}users/hhan', params={'access_token': access_token}).json())
