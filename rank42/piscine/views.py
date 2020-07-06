@@ -101,8 +101,7 @@ class List(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		value = kwargs['value']
-		if value == 'level':
+		if self.request.GET.get('value') == 'level':
 			piscine_ft_users = PiscineFtUser.objects.filter(is_public=True).order_by('-piscine_level')
 			context['sort_value'] = '레벨'
 		else:

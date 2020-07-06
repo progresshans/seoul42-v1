@@ -18,7 +18,11 @@
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
                     <td><a href="https://profile.intra.42.fr/users/{{ piscine_ft_user.login }}">{{ piscine_ft_user.login }}</a></td>
-                    <td>{{ piscine_ft_user.piscine_level }}</td>
+                    {% if sort_value == '레벨' %}
+                        <td>{{ piscine_ft_user.piscine_level }}</td>
+                    {% else %}
+                        <td>{{ piscine_ft_user.peer_count }}</td>
+                    {% endif %}
 {#                    {% if piscine_ft_user.is_pass == True %}#}
 {#                        <td style="color: blue">합</td>#}
 {#                    {% else %}#}
