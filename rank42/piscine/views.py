@@ -13,6 +13,13 @@ class PiscineManagePage(SuperUserCheckMixin, TemplateView):
 	template_name = "piscine/piscine_manage_page.html"
 
 
+def get_piscine_value_sum(peer_list):
+	result = 0
+	for _, value in peer_list.items():
+		result += int(value)
+	return result
+
+
 class MakePiscineFtUser(SuperUserCheckMixin, View):
 	"""
 	42 한국 캠퍼스 유저들중 피신중인 유저를 생성함
@@ -39,13 +46,23 @@ class MakePiscineFtUser(SuperUserCheckMixin, View):
 								or not self.is_piscine_user(detail_data["cursus_users"][0]["end_at"])):
 							pass
 						else:
+							peer_list = ft_api.get_data(
+								url=f'users/{data["id"]}/scale_teams/graph/on/created_at/by/day'
+							)
 							PiscineFtUser.objects.create(
 								id=data["id"],
 								login=data["login"],
 								is_public=True,
 								piscine_level=Decimal(detail_data["cursus_users"][0]["level"]),
+								peer_count=get_piscine_value_sum(peer_list)
 							)
 		return render(request, "piscine/piscine_manage_complete.html", {"task": "MakePiscineFtUser"})
+
+
+class DeletePiscineFtUser(SuperUserCheckMixin, View):
+	def post(self, request):
+		PiscineFtUser.objects.all().delete()
+		return render(request, "piscine/piscine_manage_complete.html", {"task": "DeletePiscineFtUser"})
 
 
 class UpdatePiscineFtUser(SuperUserCheckMixin, View):
@@ -65,7 +82,11 @@ class UpdatePiscineFtUser(SuperUserCheckMixin, View):
 		for piscine_ft_user in piscine_ft_users:
 			if self.is_one_hour(piscine_ft_user.updated_at):
 				detail_data = ft_api.get_data(url=f'users/{piscine_ft_user.id}')
+				peer_list = ft_api.get_data(
+					url=f'users/{piscine_ft_user.id}/scale_teams/graph/on/created_at/by/day'
+				)
 				piscine_ft_user.piscine_level = Decimal(detail_data["cursus_users"][0]["level"])
+				piscine_ft_user.peer_count = get_piscine_value_sum(peer_list)
 				if len(detail_data["cursus_users"]) == 2:
 					piscine_ft_user.is_pass = True
 				piscine_ft_user.save()
@@ -80,7 +101,13 @@ class List(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		piscine_ft_users = PiscineFtUser.objects.filter(is_public=True).order_by('-piscine_level')
+		value = kwargs['value']
+		if value == 'level':
+			piscine_ft_users = PiscineFtUser.objects.filter(is_public=True).order_by('-piscine_level')
+			context['sort_value'] = '레벨'
+		else:
+			piscine_ft_users = PiscineFtUser.objects.filter(is_public=True).order_by('-peer_count')
+			context['sort_value'] = '평가횟수'
 
 		context['piscine_ft_users'] = piscine_ft_users
 		return context

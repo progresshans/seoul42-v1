@@ -14,5 +14,11 @@
             <button type="submit" class="btn btn-primary">PiscineFtUserUpdate</button>
         </form>
     </div>
+    <div class="row">
+        <form action="{% url 'delete_piscine_ft_user' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">PiscineFtUserDelete</button>
+        </form>
+    </div>
 </section>
 {% endblock %}

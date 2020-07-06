@@ -9,8 +9,8 @@
             <tr>
                 <th scope="col">순위</th>
                 <th scope="col">이름</th>
-                <th scope="col">레벨</th>
-                <th scope="col">합불</th>
+                <th scope="col">{{ sort_value }}</th>
+{#                <th scope="col">합불</th>#}
             </tr>
         </thead>
         <tbody>
@@ -19,11 +19,11 @@
                     <th scope="row">{{ forloop.counter }}</th>
                     <td><a href="https://profile.intra.42.fr/users/{{ piscine_ft_user.login }}">{{ piscine_ft_user.login }}</a></td>
                     <td>{{ piscine_ft_user.piscine_level }}</td>
-                    {% if piscine_ft_user.is_pass == True %}
-                        <td style="color: blue">합</td>
-                    {% else %}
-                        <td style="color: red">불</td>
-                    {% endif %}
+{#                    {% if piscine_ft_user.is_pass == True %}#}
+{#                        <td style="color: blue">합</td>#}
+{#                    {% else %}#}
+{#                        <td style="color: red">불</td>#}
+{#                    {% endif %}#}
                 </tr>
             {% endfor %}
         </tbody>

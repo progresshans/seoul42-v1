@@ -18,4 +18,4 @@ class SuperUserCheckMixin(UserPassesTestMixin, View):
 	"""슈퍼 유저인지 확인하는 Mixin"""
 
 	def test_func(self):
-		return self.request.user.is_superuser
+		return self.request.user.is_admin
