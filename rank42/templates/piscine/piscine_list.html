@@ -2,9 +2,15 @@
 
 {% block content %}
     <div class="alert alert-secondary" role="alert">
+        <p>2기 1차 피신 정보</p>
         마지막 업데이트 : {{ piscine_ft_users.first.updated_at|date:"Y-m-d H:i:s" }}
     </div>
-    <table class="table">
+    {% if sort_value == '레벨' %}
+        <a href="{% url "piscine_list" %}" class="btn btn-primary btn-lg btn-block">피어 평가 횟수로 보기</a>
+    {% else %}
+        <a href="{% url "piscine_list" %}?value=level" class="btn btn-primary btn-lg btn-block">레벨 기준으로 보기</a>
+    {% endif %}
+    <table class="table mt-3">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">순위</th>
