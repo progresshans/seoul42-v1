@@ -9,8 +9,7 @@ def count_page(number: int) -> int:
 	"""총 유저 수를 가지고 100으로 나눠 api가 파싱해야하는 총 페이지 수를 반환"""
 	if int(number) <= 100:
 		return 1
-	page: float = int(number) / 100
-	page: int = int(page) + 1 if number % (100 * int(page)) != 0 else int(page)
+	page : int = int(num / 100) + 1 if num % 100 != 0 else int(num / 100)
 	return page
 
 
