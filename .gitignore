@@ -234,3 +234,6 @@ pip-selfcheck.json
 
 ### MY SETTINGS ###
 secret_info_file.json
+
+### MAC OS ###
+.DS_Store
