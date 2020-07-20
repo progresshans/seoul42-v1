@@ -93,7 +93,7 @@ class UpdatePiscineFtUser(SuperUserCheckMixin, View):
 		return render(request, "piscine/piscine_manage_complete.html", {"task": "피신 유저의 정보를 업데이트 했습니다."})
 
 
-class List(TemplateView):
+class List(SuperUserCheckMixin, TemplateView):
 	"""
 	Rank42의 피시너 전체 랭킹 페이지
 	"""
