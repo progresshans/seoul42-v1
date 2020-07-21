@@ -110,3 +110,7 @@ class List(SuperUserCheckMixin, TemplateView):
 
 		context['piscine_ft_users'] = piscine_ft_users
 		return context
+
+
+class Index(TemplateView):
+	template_name = "piscine/piscine_index.html"
