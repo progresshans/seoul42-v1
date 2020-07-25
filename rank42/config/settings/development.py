@@ -6,25 +6,25 @@ from .base import *
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
 ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
+	'localhost',
+	'127.0.0.1',
 ]
 
 # secret_info_file.json 파일 위치를 명시
 SECRET_INFO_FILE = os.path.join(BASE_DIR, 'config', 'settings', 'secret_info_file.json')
 
 with open(SECRET_INFO_FILE) as f:
-    secrets = json.loads(f.read())
+	secrets = json.loads(f.read())
+
 
 def get_secret(setting, secrets=secrets):
-    """비밀 변수를 가져오거나 명시적 예외를 반환한다."""
-    try:
-        return secrets[setting]
-    except KeyError:
-        error_msg = f"Set the {setting} environment variable"
-        raise ImproperlyConfigured(error_msg)
+	"""비밀 변수를 가져오거나 명시적 예외를 반환한다."""
+	try:
+		return secrets[setting]
+	except KeyError:
+		error_msg = f"Set the {setting} environment variable"
+		raise ImproperlyConfigured(error_msg)
 
 
 # Quick-start development settings - unsuitable for production
@@ -35,15 +35,18 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '9=m!n=s%nos73$$h&!ty45$e-$a)m-
 FT_UID_KEY = os.environ.get('FT_UID_KEY', get_secret("FT_UID_KEY"))
 FT_SECRET_KEY = os.environ.get('FT_SECRET_KEY', get_secret("FT_SECRET_KEY"))
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+	'default': {
+		'ENGINE': 'django.db.backends.postgresql',
+		'NAME': 'rank42',
+		'USER': 'root',
+		'PASSWORD': 'password',
+		'HOST': 'localhost',
+		'PORT': 5432,
+	}
 }
 
 AM_I_HTTPS = "http"

@@ -1,7 +1,8 @@
 """
 개발환경과 프로덕션 환경에 공통적으로 적용되는 설정값
 """
-import os, json
+import os
+import json
 from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
