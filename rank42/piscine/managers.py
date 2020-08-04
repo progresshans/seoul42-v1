@@ -6,6 +6,8 @@ class PiscineFtUserManager(models.Manager):
 			self,
 			id: int = None,
 			login: str = None,
+			pool_year=None,
+			pool_month=None,
 			is_public=None,
 			piscine_level=None,
 			peer_count=None,
@@ -13,6 +15,8 @@ class PiscineFtUserManager(models.Manager):
 		piscine_ft_user = self.model(
 			id=id,
 			login=login,
+			pool_year=pool_year,
+			pool_month=pool_month,
 			is_public=is_public,
 			piscine_level=piscine_level,
 			peer_count=peer_count,
