@@ -13,9 +13,9 @@ from .customs import AllowPiscineListCheckMixin
 from .models import PiscineFtUser, PiscineProject, TempFtUser
 from .asyncs import use_ft_api
 
-# ft_api_loop = asyncio.new_event_loop()
-# asyncio.set_event_loop(ft_api_loop)
-executor = ThreadPoolExecutor(max_workers=4)
+ft_api_loop = asyncio.new_event_loop()
+asyncio.set_event_loop(ft_api_loop)
+# executor = ThreadPoolExecutor(max_workers=4)
 
 
 class PiscineManagePage(SuperUserCheckMixin, TemplateView):
@@ -52,8 +52,8 @@ class MakePiscineFtUser(SuperUserCheckMixin, View):
 						PiscineFtUser.objects.get(id=data["id"])
 					except:
 						args = {'data': data, 'ft_api': ft_api}
-						# ft_api_loop.run_in_executor(None, use_ft_api, args)
-						executor.submit(use_ft_api, args)
+						ft_api_loop.run_in_executor(None, use_ft_api, args)
+						# executor.submit(use_ft_api, args)
 		return render(request, "piscine/piscine_manage_complete.html", {"task": "MakePiscineFtUser"})
 
 
