@@ -8,6 +8,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 	id = models.IntegerField(blank=True, null=True)
 	email = models.EmailField(max_length=50, blank=True, null=True)
 	is_active = models.BooleanField(default=True)
+	allow_piscine_list = models.BooleanField(default=False)
 	is_admin = models.BooleanField(default=False)
 
 	objects = MyUserManager()

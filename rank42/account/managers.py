@@ -19,5 +19,6 @@ class MyUserManager(BaseUserManager):
 		)
 		user.set_password(password)
 		user.is_admin = True
+		user.allow_piscine_list = True
 		user.save(using=self._db)
 		return user

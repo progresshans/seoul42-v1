@@ -16,7 +16,7 @@
                 <th scope="col">순위</th>
                 <th scope="col">이름</th>
                 <th scope="col">{{ sort_value }}</th>
-{#                <th scope="col">합불</th>#}
+                <th scope="col">합불</th>
             </tr>
         </thead>
         <tbody>
@@ -29,11 +29,11 @@
                     {% else %}
                         <td>{{ piscine_ft_user.peer_count }}</td>
                     {% endif %}
-{#                    {% if piscine_ft_user.is_pass == True %}#}
-{#                        <td style="color: blue">합</td>#}
-{#                    {% else %}#}
-{#                        <td style="color: red">불</td>#}
-{#                    {% endif %}#}
+                    {% if piscine_ft_user.is_pass == True %}
+                        <td style="color: blue">합</td>
+                    {% else %}
+                        <td style="color: red">불</td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </tbody>
