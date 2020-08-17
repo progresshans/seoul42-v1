@@ -1,14 +1,14 @@
 # [Rank42](https://rank42.herokuapp.com/)
-![Python](https://img.shields.io/badge/python-3.7.7-green)
-![Django](https://img.shields.io/badge/django-2.2.13-blue)
+![Python](https://img.shields.io/badge/python-3.8.5-green)
+![Django](https://img.shields.io/badge/django-3.1-blue)
 
 ## 소개
 42 Seoul의 랭킹 관련 웹서비스 입니다.  
 더 자세한 내용은 위키를 확인해주세요!  
 
 ## 개발환경
-- Python 3.7.7  
-- Django 2.2.13  
+- Python 3.8.5  
+- Django 3.1  
 - Sqlite3(개발용), PostgreSQL(프로덕션용)  
 - Pycharm IDE  
 
