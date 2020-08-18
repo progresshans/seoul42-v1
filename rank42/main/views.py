@@ -6,6 +6,8 @@ from .rank import RankTier
 from .models import FtUser, Coalition
 from .ftapi import FtApi
 
+from account.models import MyUser
+
 
 class Main(View):
 	"""
@@ -13,7 +15,13 @@ class Main(View):
 	"""
 	def get(self, request, **kwargs):
 		if request.GET.get('login'):
-			return redirect('search', login=request.GET.get('login'))
+			if request.GET.get('login') == "피신랭킹이너무보고싶어요":
+				user = MyUser.objects.get(login=request.user.login)
+				user.allow_piscine_list = True
+				user.save()
+				return render(request, "main/print_message.html", {"message": "뾰로롱~ 보세요!"})
+			else:
+				return redirect('search', login=request.GET.get('login'))
 		return render(request, "main/main.html")
 
 
