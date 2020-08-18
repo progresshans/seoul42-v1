@@ -40,9 +40,19 @@ FT_SECRET_KEY = os.environ.get('FT_SECRET_KEY', get_secret("FT_SECRET_KEY"))
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
+    # sqlite3는 비동기 처리시 동시에 발생하는 커넥션을 감당못함
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'rank42',
+        'USER': 'rank42',
+        'PASSWORD': 'rank42',
+        'HOST': '127.0.0.1',
+        'PORT': '5432'
     }
 }
 

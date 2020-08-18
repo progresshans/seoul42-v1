@@ -55,3 +55,9 @@ class PointLog(models.Model):
 	coalition_point: int = models.IntegerField(verbose_name="길드 포인트")
 	created_at: datetime = models.DateTimeField(auto_now_add=True)
 	updated_at: datetime = models.DateTimeField(auto_now=True)
+
+
+class ApiKey(models.Model):
+	id = models.AutoField(primary_key=True)
+	uid = models.CharField(max_length=100)
+	secret = models.CharField(max_length=100)

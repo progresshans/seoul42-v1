@@ -4,7 +4,9 @@
 from typing import Dict, Union, Iterable
 
 import requests
+import random
 from django.conf import settings
+from .models import ApiKey
 
 
 class FtApi:
@@ -15,8 +17,9 @@ class FtApi:
 	update_branch = None
 
 	def __init__(self, UpdateBranch=None):
-		self.ft_uid_key = settings.FT_UID_KEY
-		self.ft_secret_key = settings.FT_SECRET_KEY
+		random_api_key = random.choice(ApiKey.objects.all())
+		self.ft_uid_key = random_api_key.uid
+		self.ft_secret_key = random_api_key.secret
 		self.update_branch = UpdateBranch if UpdateBranch else None
 
 	def get_access_token(self) -> str:
