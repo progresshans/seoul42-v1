@@ -1,1 +1,2 @@
 web: gunicorn config.wsgi --log-level debug
+worker: celery worker --app=config
