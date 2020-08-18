@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% if user.allow_piscine_list %}
+        <a href="{% url "piscine_list" %}" class="btn btn-primary btn-lg btn-block">피신 랭킹 보기</a>
+    {% endif %}
     <div class="row">
         <div class="col-12 my-auto">
             <br>

@@ -77,12 +77,18 @@ class List(AllowPiscineListCheckMixin, TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		if self.request.GET.get('value') == 'level':
-			piscine_ft_users = PiscineFtUser.objects.filter(is_public=True, pool_year="2020", pool_month="july").order_by('-piscine_level')
-			context['sort_value'] = '레벨'
-		else:
-			piscine_ft_users = PiscineFtUser.objects.filter(is_public=True, pool_year="2020", pool_month="july").order_by('-peer_count')
-			context['sort_value'] = '평가횟수'
+		pool_year = "2020" if self.request.GET.get('pool_year') is None else self.request.GET.get('pool_year')
+		pool_month = "july" if self.request.GET.get('pool_month') is None else self.request.GET.get('pool_month')
+
+		piscine_ft_users = PiscineFtUser.objects.filter(is_public=True, pool_year=pool_year, pool_month=pool_month).order_by('-piscine_level')
+		context['sort_value'] = '레벨'
+
+		# if self.request.GET.get('value') == 'level':
+		# 	piscine_ft_users = PiscineFtUser.objects.filter(is_public=True, pool_year="2020", pool_month="july").order_by('-piscine_level')
+		# 	context['sort_value'] = '레벨'
+		# else:
+		# 	piscine_ft_users = PiscineFtUser.objects.filter(is_public=True, pool_year="2020", pool_month="july").order_by('-peer_count')
+		# 	context['sort_value'] = '평가횟수'
 
 		context['piscine_ft_users'] = piscine_ft_users
 		return context
