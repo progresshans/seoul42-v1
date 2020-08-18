@@ -59,5 +59,6 @@ class PointLog(models.Model):
 
 class ApiKey(models.Model):
 	id = models.AutoField(primary_key=True)
+	name = models.CharField(max_length=20, blank=True, null=True)
 	uid = models.CharField(max_length=100)
 	secret = models.CharField(max_length=100)
