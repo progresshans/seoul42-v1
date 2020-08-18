@@ -82,6 +82,14 @@ class List(AllowPiscineListCheckMixin, TemplateView):
 
 		piscine_ft_users = PiscineFtUser.objects.filter(is_public=True, pool_year=pool_year, pool_month=pool_month).order_by('-piscine_level')
 		context['sort_value'] = '레벨'
+		if pool_year == "2020" and pool_month == "february":
+			context['piscine_name'] = '1기 1차'
+		elif pool_year == "2020" and pool_month == "june":
+			context['piscine_name'] = '1기 2차'
+		elif pool_year == "2020" and pool_month == "july":
+			context['piscine_name'] = '2기 1차'
+		elif pool_year == "2020" and pool_month == "august":
+			context['piscine_name'] = '2기 2차'
 
 		# if self.request.GET.get('value') == 'level':
 		# 	piscine_ft_users = PiscineFtUser.objects.filter(is_public=True, pool_year="2020", pool_month="july").order_by('-piscine_level')
