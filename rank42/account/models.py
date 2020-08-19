@@ -30,3 +30,13 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 	@property
 	def is_staff(self):
 		return self.is_admin
+
+
+class Profile(models.Model):
+	user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
+	github_login = models.CharField(max_length=100, blank=True, null=True)
+	github_id = models.IntegerField(blank=True, null=True)
+	github_bio = models.TextField(blank=True, null=True)
+	github_html_url = models.URLField(blank=True, null=True)
+	github_avatar_url = models.URLField(blank=True, null=True)
+	github_total_star = models.IntegerField(blank=True, null=True)

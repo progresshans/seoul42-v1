@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.base import TemplateView
 from django.views import View
 
-from .rank import RankTier
+from .rank import RankTier, get_tier_img
 from .models import FtUser, Coalition
 from .ftapi import FtApi
 
@@ -75,7 +75,7 @@ class Search(TemplateView):
 				ft_user,
 			)
 			ft_user.need_peer_evaluation = (ft_user.next_tier_point // 42) + 1
-			ft_user.tier_img = RankTier().get_tier_img(ft_user.tier.tier_name)
+			ft_user.tier_img = get_tier_img(ft_user.tier.tier_name)
 		else:
 			ft_user.next_tier_name, ft_user.next_tier_point = -1, -1
 
