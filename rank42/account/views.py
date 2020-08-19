@@ -22,12 +22,14 @@ class SignInPage(TemplateView):
 		ft_api_sign_in = "https://api.intra.42.fr/oauth/authorize"
 		redirect_uri = f"{settings.AM_I_HTTPS}://{self.request.get_host()}{reverse('ft_login')}"
 		response_type = "code"
+		ft_api_scope = "public+projects+profile+elearning+tig+forum"
 		context['ft_api_sign_in_url'] = (
 			f"{ft_api_sign_in}?"
 			f"client_id={settings.FT_UID_KEY}&"
 			f"redirect_uri={redirect_uri}&"
 			f"response_type={response_type}&"
-			f"state={ft_api_state}"
+			f"state={ft_api_state}&"
+			f"scope={ft_api_scope}"
 		)
 		return context
 
