@@ -6,7 +6,7 @@ from .rank import RankTier, get_tier_img
 from .models import FtUser, Coalition
 from .ftapi import FtApi
 
-from account.models import MyUser
+from account.models import MyUser, Profile
 
 
 class Main(View):
@@ -102,3 +102,13 @@ class UpdateFtUser(View):
 		rank_tier = RankTier(ft_users.count())
 		rank_tier.set_tier(ft_users)
 		return redirect('search', login=ft_user.login)
+
+
+class GithubRank(TemplateView):
+	template_name = "main/github_rank.html"
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		profiles = Profile.objects.all().exclude(github_login=None).order_by('github_total_star')
+		context['profiles'] = profiles
+		return context

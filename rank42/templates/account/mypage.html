@@ -4,4 +4,5 @@
     <p>42 ID : {{ user.login }}</p>
     <p>42 Email : {{ user.email }}</p>
     <p>Github ID : {{ user.profile.github_login }}</p>
+    <a href="{% url "add_github_id" %}" class="btn btn-primary btn-lg btn-block">Github ID 등록</a>
 {% endblock %}

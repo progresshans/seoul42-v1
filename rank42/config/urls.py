@@ -38,6 +38,7 @@ urlpatterns = [
 	path('list/', main.views.List.as_view(), name="list"),
 	path('search/<str:login>/', main.views.Search.as_view(), name="search"),
 	path('update/ft-user/', main.views.UpdateFtUser.as_view(), name="update_ft_user"),
+	path('github/', main.views.GithubRank.as_view(), name="github_rank"),
 
 	# Manage App 관련 url
 	path('manager/', include('manager.urls')),

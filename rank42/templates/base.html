@@ -39,13 +39,16 @@
                     <a class="nav-link" href="{% url 'piscine_index' %}">피신 랭킹</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'github_rank' %}">깃헙 랭킹</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'club_list' %}">동아리</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-lg-auto">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <span class="nav-link">{{ user.login }}님</span>
+                        <a class="nav-link" href="{% url 'mypage' %}">{{ user.login }}님</a>
                     </li>
                     <li class="nav-item">
                         <form class="mb-0" id="temp-form-logout" action="{% url 'logout' %}" method="POST">

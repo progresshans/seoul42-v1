@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="table">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">순위</th>
+                    <th scope="col">이름(42 - Github)</th>
+                    <th scope="col">스타</th>
+                    <th scope="col">소개</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profile in profiles %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td><img src="{{ profile.github_avatar_url }}" style="max-width: 40px; height: auto;"><a href="https://profile.intra.42.fr/users/{{ profile.user.login }}">{{ profile.user.login }}</a> - <a href="{{ profile.github_html_url }}">{{ profile.github_login }}</a></td>
+                        <td>{{ profile.github_total_star }}</td>
+                        {% if profile.github_bio != None %}
+                            <td>{{ profile.github_bio|linebreaksbr }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
