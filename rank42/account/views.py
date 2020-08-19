@@ -1,9 +1,11 @@
 from django.shortcuts import render, reverse, redirect
 from django.views.generic.base import TemplateView
 from django.views import View
-from .custom import get_random_string, authenticating_ft_api
+from django.views.generic.edit import CreateView
 from django.conf import settings
 from django.contrib.auth import login, authenticate, logout
+
+from .custom import get_random_string, authenticating_ft_api
 from .models import MyUser
 
 
@@ -36,6 +38,8 @@ class FtApiSignIn(View):
 				request.GET.get('code'),
 				f"{settings.AM_I_HTTPS}://{self.request.get_host()}{reverse('ft_login')}",
 			)
+			print(f"code : {request.GET.get('code')}")
+			print(f"gac : {ft_auth_api.get_access_token()}")
 			if ft_auth_api is None:
 				return render(request, "account/sign_in_error.html", {"error": "로그인 에러입니다. 다시 시도하세요."})
 			request.session['login_user'] = ft_user_data["login"]
@@ -57,3 +61,11 @@ class LogOut(View):
 	def post(self, request):
 		logout(request)
 		return redirect('main')
+
+
+class MyPage(TemplateView):
+	template_name = "account/mypage.html"
+
+
+class AddGithubId(CreateView):
+	pass

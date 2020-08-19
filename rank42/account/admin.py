@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from .models import MyUser
+from .models import MyUser, Profile, UserToken
 from .forms import AdminChangeForm, AdminCreationForm
 
 
@@ -31,3 +31,5 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(MyUser, UserAdmin)
 admin.site.unregister(Group)
+admin.site.register(Profile)
+admin.site.register(UserToken)

@@ -40,3 +40,7 @@ class Profile(models.Model):
 	github_html_url = models.URLField(blank=True, null=True)
 	github_avatar_url = models.URLField(blank=True, null=True)
 	github_total_star = models.IntegerField(blank=True, null=True)
+
+
+class UserToken(models.Model):
+	user = models.OneToOneField(MyUser, on_delete=models.CASCADE)

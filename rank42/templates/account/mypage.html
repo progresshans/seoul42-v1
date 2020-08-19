@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>42 ID : {{ user.login }}</p>
+    <p>42 Email : {{ user.email }}</p>
+    <p>Github ID : {{ user.profile.github_login }}</p>
+{% endblock %}
