@@ -41,8 +41,6 @@ class FtApiSignIn(View):
 				request.GET.get('code'),
 				f"{settings.AM_I_HTTPS}://{self.request.get_host()}{reverse('ft_login')}",
 			)
-			print(f"code : {request.GET.get('code')}")
-			print(f"gac : {ft_auth_api.get_access_token()}")
 			if ft_auth_api is None:
 				return render(request, "account/sign_in_error.html", {"error": "로그인 에러입니다. 다시 시도하세요."})
 			request.session['login_user'] = ft_user_data["login"]

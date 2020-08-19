@@ -67,7 +67,7 @@ class Search(TemplateView):
 		context = super().get_context_data(**kwargs)
 		login = kwargs['login']
 		ft_users = FtUser.objects.filter(is_alive=True).order_by('-tier__coalition_point')
-		ft_user = ft_users.get(login=login)
+		ft_user = ft_users.get(login=str(login))
 		ft_user.percent = round((ft_user.tier.tier_rank / ft_users.count()) * 100, 1)
 		if ft_user.tier.coalition_point != 0:
 			ft_user.next_tier_name, ft_user.next_tier_point = self.get_next_tier_name(

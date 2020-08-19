@@ -8,6 +8,8 @@ from main.custom import count_page, SuperUserCheckMixin
 from main.ftapi import FtApi
 from main.models import FtUser, Coalition, Tier
 
+from .tasks import make_ft_user
+
 
 class ManagePage(SuperUserCheckMixin, TemplateView):
 	template_name = "manager/manage_page.html"
@@ -38,34 +40,9 @@ class MakeFtUser(SuperUserCheckMixin, View):
 	"""
 	def post(self, request):
 		ft_api: FtApi = FtApi()
-		page: int = count_page(ft_api.get_data(url="campus/29")["users_count"])
-		crawlings = [ft_api.get_data(
-			url="campus/29/users",
-			page=x,
-			per_page=100,
-			sort="login"
-		) for x in range(1, int(page) + 1)]
-		for crawling in crawlings:
-			for data in crawling:
-				if FtUser.objects.filter(id=data["id"]).exists():
-					pass
-				else:
-					# detail_data = ft_api.get_data(url=f'users/{data.id}')
-					coalition_data = ft_api.get_data(url=f'users/{data["id"]}/coalitions_users')
-					if coalition_data and Coalition.objects.filter(id=int(coalition_data[0]["coalition_id"])).exists():
-						FtUser.objects.create(
-							id=data["id"],
-							login=data["login"],
-							is_alive=True,
-							coalition=Coalition.objects.get(id=int(coalition_data[0]["coalition_id"])),
-							coalition_point=coalition_data[0]["score"],
-						)
-					else:
-						FtUser.objects.create(
-							id=data["id"],
-							login=data["login"],
-							is_alive=False,
-						)
+		pages = count_page(ft_api.get_data(url="campus/29")["users_count"])
+		for page in range(1, int(pages) + 1):
+			make_ft_user.delay(page)
 		return render(request, "manager/manage_complete.html", {"task": "MakeFtUser"})
 
 
