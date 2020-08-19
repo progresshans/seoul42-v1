@@ -109,6 +109,6 @@ class GithubRank(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		profiles = Profile.objects.all().exclude(github_login=None).order_by('github_total_star')
+		profiles = Profile.objects.all().exclude(github_login=None).order_by('-github_total_star')
 		context['profiles'] = profiles
 		return context
