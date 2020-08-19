@@ -10,6 +10,7 @@ from django.conf import settings
 class FtAuthApi:
 	"""42 oauth 인증을 위한 class"""
 	ft_access_token = None
+	ft_refresh_token = None
 	ft_oauth_url = "https://api.intra.42.fr/oauth/token"
 	ft_api_url = "https://api.intra.42.fr/v2/"
 
@@ -27,13 +28,18 @@ class FtAuthApi:
 			'redirect_uri': redirect_url,
 		}
 		try:
-			self.ft_access_token: str = requests.post(self.ft_oauth_url, data=oauth_data).json()['access_token']
+			ft_api_result = requests.post(self.ft_oauth_url, data=oauth_data).json()
+			self.ft_access_token = ft_api_result['access_token']
+			self.ft_refresh_token = ft_api_result['refresh_token']
 			return 1
 		except KeyError:
 			return 0
 
 	def get_access_token(self) -> str:
 		return self.ft_access_token
+
+	def get_refresh_token(self):
+		return self.ft_refresh_token
 
 	def get_me(self):
 		params: dict = {

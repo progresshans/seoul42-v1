@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.conf import settings
+
 from .managers import MyUserManager
 
 
@@ -33,7 +35,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Profile(models.Model):
-	user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
+	user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	github_login = models.CharField(max_length=100, blank=True, null=True)
 	github_id = models.IntegerField(blank=True, null=True)
 	github_bio = models.TextField(blank=True, null=True)
@@ -43,4 +45,5 @@ class Profile(models.Model):
 
 
 class UserToken(models.Model):
-	user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
+	user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+	ft_token = models.CharField(max_length=100, blank=True, null=True)

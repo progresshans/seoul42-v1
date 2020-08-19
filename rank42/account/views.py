@@ -48,11 +48,13 @@ class FtApiSignIn(View):
 				login(request, user, backend=settings.AUTHENTICATION_BACKENDS[0])
 				return redirect('main')
 			else:
-				user = MyUser.objects.create_user(
+				user = MyUser.objects.create(
 					id=ft_user_data["id"],
 					email=ft_user_data["email"],
 					login=ft_user_data["login"],
 				)
+				user.usertoken.ft_token = ft_auth_api.get_refresh_token()
+				user.usertoken.save()
 				login(request, user, backend=settings.AUTHENTICATION_BACKENDS[0])
 				return redirect('main')
 
