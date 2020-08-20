@@ -1,4 +1,4 @@
-# [Rank42](https://rank42.herokuapp.com/)
+# [Seoul42](https://seoul42.herokuapp.com/)
 ![Python](https://img.shields.io/badge/python-3.8.5-green)
 ![Django](https://img.shields.io/badge/django-3.1-blue)
 
@@ -13,7 +13,7 @@
 - Pycharm IDE  
 
 ## 실행방법
-"/rank42/config/settings" 경로에 'secret_info_file.json'파일이 필요합니다. 아래와 같은 형태의 JSON 파일입니다.  
+"/seoul42/config/settings" 경로에 'secret_info_file.json'파일이 필요합니다. 아래와 같은 형태의 JSON 파일입니다.  
 
 ```json
 {
@@ -21,7 +21,7 @@
   "FT_SECRET_KEY": "42 API SECRET KEY"
 }
 ```
-> 상세한 방법은 [wiki의 기여 가이드](https://github.com/progresshans/rank42/wiki/기여-가이드)를 통해 확인할 수 있습니다.
+> 상세한 방법은 [wiki의 기여 가이드](https://github.com/progresshans/seoul42/wiki/기여-가이드)를 통해 확인할 수 있습니다.
 > 42Api 키발급은 [https://profile.intra.42.fr/oauth/applications](https://profile.intra.42.fr/oauth/applications)에서 'REGISTER A NEW APP'을 통해 가능합니다.
 
 ## 폴더설명
@@ -30,4 +30,4 @@
 - rank42 : Rank42 관련 코드  
 
 ## 기여는 언제나 환영입니다!
-Rank42에 기여하고 싶으신가요? [위키](https://github.com/progresshans/rank42/wiki)를 통해 [기여 가이드](https://github.com/progresshans/rank42/wiki/기여-가이드)와 [개발 배경 및 방향](https://github.com/progresshans/rank42/wiki/개발-배경-및-방향)을 살펴보세요!
+Seoul42에 기여하고 싶으신가요? [위키](https://github.com/progresshans/seoul42/wiki)를 통해 [기여 가이드](https://github.com/progresshans/seoul42/wiki/기여-가이드)와 [개발 배경 및 방향](https://github.com/progresshans/seoul42/wiki/개발-배경-및-방향)을 살펴보세요!
