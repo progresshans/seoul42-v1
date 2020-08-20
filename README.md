@@ -9,7 +9,7 @@
 ## 개발환경
 - Python 3.8.5  
 - Django 3.1  
-- Sqlite3(개발용), PostgreSQL(프로덕션용)  
+- PostgreSQL  
 - Pycharm IDE  
 
 ## 실행방법
