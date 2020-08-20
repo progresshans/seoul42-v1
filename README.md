@@ -13,6 +13,7 @@
 - Pycharm IDE  
 
 ## 실행방법
+DM을 보내주세요.  
 "/seoul42/config/settings" 경로에 'secret_info_file.json'파일이 필요합니다. 아래와 같은 형태의 JSON 파일입니다.  
 
 ```json
