@@ -1,7 +1,7 @@
 import requests, json, os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_INFO_FILE = os.path.join(BASE_DIR, 'rank42', 'config', 'settings', 'secret_info_file.json')
+SECRET_INFO_FILE = os.path.join(BASE_DIR, 'seoul42', 'config', 'settings', 'secret_info_file.json')
 with open(SECRET_INFO_FILE) as f:
 	secrets = json.loads(f.read())
 
