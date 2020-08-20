@@ -18,6 +18,7 @@ FT_SECRET_KEY = os.environ.get('FT_SECRET_KEY')
 
 
 ALLOWED_HOSTS = [
+    '.seoul42.com',
     '.herokuapp.com',
 ]
 
