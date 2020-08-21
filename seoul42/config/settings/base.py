@@ -23,6 +23,7 @@ INSTALLED_APPS = [
 	'club.apps.ClubConfig',
 	'django_celery_results',
 	'rest_framework',
+	'drf_yasg',
 ]
 
 MIDDLEWARE = [

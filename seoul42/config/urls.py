@@ -14,9 +14,27 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 import main.views
 import account.views
+
+from rest_framework import routers, permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+
+schema_view = get_schema_view(
+	openapi.Info(
+		title="Seoul42 API",
+		default_version="v1",
+		description="Seoul42의 API 문서입니다.",
+		contact=openapi.Contact(email="progresshans@gmail.com"),
+		license=openapi.License(name="progresshans"),
+	),
+	public=True,
+	permission_classes=(permissions.AllowAny,),
+)
+
 
 urlpatterns = [
 	# Admin 관련 url
@@ -48,4 +66,9 @@ urlpatterns = [
 
 	# piscine App 관련 url
 	path('piscine/', include('piscine.urls')),
+
+	# API 문서 관련 url
+	re_path(r'^api/swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='api_swagger_json'),
+	re_path(r'^api/swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='api_swagger'),
+	re_path(r'^api/docs/$', schema_view.with_ui('redoc', cache_timeout=0), name='api_docs'),
 ]
