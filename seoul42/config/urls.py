@@ -40,6 +40,9 @@ urlpatterns = [
 	path('update/ft-user/', main.views.UpdateFtUser.as_view(), name="update_ft_user"),
 	path('github/', main.views.GithubRank.as_view(), name="github_rank"),
 
+	# Main-Api-Rank 관련 url
+	path('api/rank/', include('main.urls.api.rank')),
+
 	# Manage App 관련 url
 	path('manager/', include('manager.urls')),
 
