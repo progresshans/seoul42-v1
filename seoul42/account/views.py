@@ -15,12 +15,12 @@ from .models import MyUser, Profile
 class SignInPage(TemplateView):
 	template_name = "account/sign_in.html"
 
-	def get_context_data(self,**kwargs):
+	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		ft_api_state = get_random_string(21)
 		self.request.session['ft_api_state'] = ft_api_state
 		ft_api_sign_in = "https://api.intra.42.fr/oauth/authorize"
-		redirect_uri = f"{settings.AM_I_HTTPS}://{self.request.get_host()}{reverse('ft_login')}"
+		redirect_uri = f"{settings.AM_I_HTTPS}://{self.request.get_host()}{reverse('ft_login')}?next={self.request.GET.get('next')}"
 		response_type = "code"
 		ft_api_scope = "public+projects+profile+elearning+tig+forum"
 		context['ft_api_sign_in_url'] = (
@@ -41,7 +41,7 @@ class FtApiSignIn(View):
 		else:
 			ft_auth_api, ft_user_data = authenticating_ft_api(
 				request.GET.get('code'),
-				f"{settings.AM_I_HTTPS}://{self.request.get_host()}{reverse('ft_login')}",
+				f"{settings.AM_I_HTTPS}://{self.request.get_host()}{reverse('ft_login')}?next={self.request.GET.get('next')}",
 			)
 			if ft_auth_api is None:
 				return render(request, "account/sign_in_error.html", {"error": "로그인 에러입니다. 다시 시도하세요."})
@@ -59,6 +59,10 @@ class FtApiSignIn(View):
 				user.usertoken.ft_token = ft_auth_api.get_refresh_token()
 				user.usertoken.save()
 				login(request, user, backend=settings.AUTHENTICATION_BACKENDS[0])
+
+			if next_url := request.GET.get('next'):
+				return redirect(next_url)
+			else:
 				return redirect('main')
 
 
