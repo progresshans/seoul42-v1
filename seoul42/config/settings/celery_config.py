@@ -1,6 +1,6 @@
 import os
 
-broker_url = os.environ.get('REDIS_URL', 'redis://localhost:6379')
+broker_url = os.environ.get('REDIS_URL', 'redis://seoul42_redis:6379/0')
 result_backend = 'django-db'
 
 task_serializer = 'json'
