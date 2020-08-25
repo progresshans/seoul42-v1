@@ -12,12 +12,13 @@ def make_ft_user(page):
 			FtUser.objects.get(id=data["id"])
 		except:
 			try:
-				# detail_data = ft_api.get_data(url=f'users/{data["id"]}')
+				detail_data = ft_api.get_data(url=f'users/{data["id"]}')
 				coalition_data = ft_api.get_data(url=f'users/{data["id"]}/coalitions_users')
 				if coalition_data and Coalition.objects.filter(id=int(coalition_data[0]["coalition_id"])).exists():
 					ft_user = FtUser.objects.create(
 						id=data["id"],
 						login=data["login"],
+						data=detail_data,
 						is_alive=True,
 						coalition=Coalition.objects.get(id=int(coalition_data[0]["coalition_id"])),
 					)
@@ -29,6 +30,7 @@ def make_ft_user(page):
 					FtUser.objects.create(
 						id=data["id"],
 						login=data["login"],
+						data=detail_data,
 						is_alive=False,
 					)
 			except:

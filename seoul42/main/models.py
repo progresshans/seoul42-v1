@@ -18,6 +18,7 @@ class Coalition(models.Model):
 class FtUser(models.Model):
 	id = models.IntegerField(unique=True, primary_key=True)
 	login = models.CharField(verbose_name="로그인 아이디", max_length=20)
+	data = models.JSONField(blank=True, null=True)
 	is_alive = models.BooleanField(verbose_name="생존여부", default=False)
 	coalition = models.ForeignKey(
 		Coalition,
