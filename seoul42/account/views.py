@@ -8,7 +8,7 @@ from django.conf import settings
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .custom import get_random_string, authenticating_ft_api
+from .customs import get_random_string, authenticating_ft_api
 from .models import MyUser, Profile
 
 
@@ -17,7 +17,7 @@ class SignInPage(TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		ft_api_state = get_random_string(21)
+		ft_api_state = get_random_string(42)
 		self.request.session['ft_api_state'] = ft_api_state
 		ft_api_sign_in = "https://api.intra.42.fr/oauth/authorize"
 		redirect_uri = f"{settings.AM_I_HTTPS}://{self.request.get_host()}{reverse('ft_login')}?next={self.request.GET.get('next')}"

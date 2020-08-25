@@ -31,9 +31,9 @@ class FtAuthApi:
 			ft_api_result = requests.post(self.ft_oauth_url, data=oauth_data).json()
 			self.ft_access_token = ft_api_result['access_token']
 			self.ft_refresh_token = ft_api_result['refresh_token']
-			return 1
+			return True
 		except KeyError:
-			return 0
+			return False
 
 	def get_access_token(self) -> str:
 		return self.ft_access_token

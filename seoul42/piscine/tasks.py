@@ -1,6 +1,6 @@
 from celery import shared_task
 from main.ftapi import FtApi
-from main.custom import count_page
+from main.customs import count_page
 from .models import PiscineFtUser
 from decimal import Decimal
 

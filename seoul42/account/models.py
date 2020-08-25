@@ -11,7 +11,10 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 	email = models.EmailField(max_length=50, blank=True, null=True)
 	is_active = models.BooleanField(default=True)
 	allow_piscine_list = models.BooleanField(default=False)
+	user_type = models.IntegerField(default=0)
 	is_admin = models.BooleanField(default=False)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
 
 	objects = MyUserManager()
 

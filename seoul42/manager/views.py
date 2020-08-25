@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.views import View
 
-from main.custom import count_page, SuperUserCheckMixin
+from main.customs import count_page, SuperUserCheckMixin
 from main.ftapi import FtApi
 from main.models import FtUser, Coalition, Tier
 

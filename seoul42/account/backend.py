@@ -12,6 +12,6 @@ class RequestAuthBackend(ModelBackend):
 
     def get_user(self, login):
         try:
-            return MyUser.objects.get(pk=login)
+            return MyUser.objects.get(login=login)
         except MyUser.DoesNotExist:
             return None

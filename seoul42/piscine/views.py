@@ -4,7 +4,7 @@ from django.views import View
 from datetime import datetime, timedelta
 from decimal import Decimal
 
-from main.custom import count_page, SuperUserCheckMixin
+from main.customs import count_page, SuperUserCheckMixin
 from main.ftapi import FtApi
 from .customs import AllowPiscineListCheckMixin
 from .models import PiscineFtUser, PiscineProject, TempFtUser
