@@ -51,7 +51,7 @@ DATABASES = {
         'NAME': 'seoul42',
         'USER': 'seoul42',
         'PASSWORD': 'seoul42',
-        'HOST': 'seoul42_db',
+        'HOST': 'db',
         'PORT': '5432'
     }
 }

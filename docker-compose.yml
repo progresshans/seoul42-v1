@@ -45,6 +45,7 @@ services:
       - "5432:5432"
     volumes:
       - seoul42_db:/var/lib/postgresql/data
+#      - ./docker/postgres/:/docker-entrypoint-initdb.d
     environment:
       - POSTGRES_DB=seoul42
       - POSTGRES_USER=seoul42
