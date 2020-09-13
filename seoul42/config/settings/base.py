@@ -21,6 +21,7 @@ INSTALLED_APPS = [
 	'piscine.apps.PiscineConfig',
 	'account.apps.AccountConfig',
 	'club.apps.ClubConfig',
+	'toy.apps.ToyConfig',
 	'django_celery_results',
 	'rest_framework',
 	'drf_yasg',
