@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import re
 
 
 def get_weekday_list():
@@ -12,3 +13,9 @@ def get_weekday_list():
 			'body': f'{temp_day.strftime("%Y-%m-%d")}({weekdays_kr[i]})',
 		}
 	return weekday_list
+
+
+def change_report_date(content, head, body):
+	content = re.sub('[0-9]{2,4}[0-9]{1,2}[0-9]{1,2} {0,1}\([월화수목금토일]\)', head, str(content))
+	content = re.sub('[0-9]{2,4}-[0-9]{1,2}-[0-9]{1,2} {0,1}\([월화수목금토일]\)', body, str(content))
+	return content

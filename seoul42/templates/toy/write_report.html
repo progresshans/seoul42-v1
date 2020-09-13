@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="container">
+        <div class="row">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="text" name="user_name" placeholder="아이디">
+                <input type="text" name="password" placeholder="비밀번호">
+                <button type="submit" class="btn btn-primary">보고서 작성</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}

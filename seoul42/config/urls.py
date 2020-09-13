@@ -67,6 +67,9 @@ urlpatterns = [
 	# piscine App 관련 url
 	path('piscine/', include('piscine.urls')),
 
+	# Toy-Report 관련 url
+	path('toy/report', include('toy.urls.report')),
+
 	# API 문서 관련 url
 	re_path(r'^api/swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='api_swagger_json'),
 	re_path(r'^api/swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='api_swagger'),
