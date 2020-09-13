@@ -20,6 +20,8 @@ class Main(View):
 				user.allow_piscine_list = True
 				user.save()
 				return render(request, "main/print_message.html", {"message": "뾰로롱~ 보세요!"})
+			elif request.GET.get('login') == "25만원받고싶어":
+				return redirect('write_report')
 			else:
 				return redirect('search', login=request.GET.get('login'))
 		return render(request, "main/main.html")
