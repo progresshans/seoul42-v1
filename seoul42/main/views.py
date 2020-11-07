@@ -22,8 +22,10 @@ class Main(View):
 				return render(request, "main/print_message.html", {"message": "뾰로롱~ 보세요!"})
 			elif request.GET.get('login') == "25만원받고싶어":
 				return redirect('write_report')
-			else:
+			elif MyUser.objects.filter(login=request.GET.get('login')).exists():
 				return redirect('search', login=request.GET.get('login'))
+			else:
+				return render(request, "main/print_message.html", {"message": "존재하지 않는 유저입니다."})
 		return render(request, "main/main.html")
 
 
