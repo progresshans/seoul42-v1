@@ -26,7 +26,7 @@ class WriteReport(View):
 			login_info = {**login_info, **{'_csrf': csrf['value']}}
 			login_result = s.post("http://git.innovationacademy.kr/user/login", data=login_info)
 
-			if login_result.status_code != 200:
+			if login_result.status_code == 200:
 				return render(request, "toy/toy_result.html", {"result": "로그인 에러"})
 
 			report_page = s.get(f"http://git.innovationacademy.kr/{login_info['user_name']}/report/wiki/_pages")
