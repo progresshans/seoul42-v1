@@ -2,17 +2,20 @@ from datetime import datetime, timedelta
 import re
 
 
-def get_weekday_list():
+def get_weekday_list(selected=None):
 	first_weekday = datetime.today() - timedelta(days=datetime.today().weekday())
-	weekdays_kr = ["월", "화", "수", "목", "금"]
+	weekdays_kr = ["월", "화", "수", "목", "금", "토", "일"]
 	weekday_list = {}
-	for i in range(0, 5):
+	if selected is None:
+		selected = range(7)
+	for i in selected:
 		temp_day = first_weekday + timedelta(days=i)
 		weekday_list[i] = {
 			'head': f'{temp_day.strftime("%Y%m%d")}({weekdays_kr[i]})',
 			'body': f'{temp_day.strftime("%Y-%m-%d")}({weekdays_kr[i]})',
 		}
-	return weekday_list
+	weekday_numbers = selected
+	return weekday_list, weekday_numbers
 
 
 def change_report_date(content, head, body):

@@ -13,7 +13,7 @@ class WriteReport(View):
 		return render(request, "toy/write_report.html", {"weekday_list": weekday_list})
 
 	def post(self, request):
-		weekday_list = get_weekday_list()
+		weekday_list, weekday_numbers = get_weekday_list(list(map(int, request.POST.getlist("weekday_select"))))
 		login_info = {
 			"user_name": request.POST.get("user_name"),
 			"password": request.POST.get("password"),
@@ -26,10 +26,9 @@ class WriteReport(View):
 			login_info = {**login_info, **{'_csrf': csrf['value']}}
 			login_result = s.post("http://git.innovationacademy.kr/user/login", data=login_info)
 
-			if login_result.status_code == 200:
-				return render(request, "toy/toy_result.html", {"result": "로그인 에러"})
-
 			report_page = s.get(f"http://git.innovationacademy.kr/{login_info['user_name']}/report/wiki/_pages")
+			if report_page.status_code != 200:
+				return render(request, "toy/toy_result.html", {"result": "로그인 에러"})
 			report_page_soup = bs(report_page.text, 'html.parser')
 
 			wiki_last_url = f'http://git.innovationacademy.kr{report_page_soup.select("body > div > div.repository.wiki.pages > div.ui.container > table > tbody > tr:nth-last-child(1) > td:nth-child(1) > a")[0]["href"]}/_edit'
@@ -43,7 +42,7 @@ class WriteReport(View):
 			wiki_new_soup = bs(wiki_new.text, 'html.parser')
 			csrf = wiki_new_soup.find('input', {'name': '_csrf'})
 
-			for i in range(0, 5):
+			for i in weekday_numbers:
 				wiki_new_result = s.post(wiki_new_url, data={
 					"title": weekday_list[i]['head'],
 					"content": change_report_date(wiki_text, weekday_list[i]['head'], weekday_list[i]['body']),
