@@ -20,7 +20,7 @@ itypes==1.2.0
 Jinja2==2.11.2
 kombu==4.6.11
 MarkupSafe==1.1.1
-numpy==1.18.4
+numpy==1.22.0
 packaging==20.4
 pandas==1.0.4
 psycopg2-binary==2.8.5
